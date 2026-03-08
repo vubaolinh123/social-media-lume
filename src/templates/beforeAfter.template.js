@@ -31,7 +31,6 @@ ${title ? `- Title text: "${title}"` : '- Add an elegant title like "TRANSFORMAT
  ${serviceName ? `- Service name: "${serviceName}"` : ''}
 - Style: Luxury, elegant, premium beauty brand aesthetic
 - Add subtle sparkle or glow effects to enhance the "after" side
-- Include text: "${brand.handle}" somewhere subtle
 - The overall design should look like a professional Instagram post from a high-end beauty salon
 
 IMPORTANT:
@@ -68,7 +67,6 @@ HASHTAGS: #${brand.name.replace(/\s+/g, '')} #noimi #beforeafter #eyelashes #${b
 THÔNG TIN LIÊN HỆ (chèn cuối caption):
 - ${brand.name} | ${brand.phone}
 - ${brand.address}
-- ${brand.handle}
 
 Trả lời theo format JSON:
 {

@@ -30,7 +30,6 @@ const userSchema = new mongoose.Schema({
     },
     brand: {
       name: { type: String, default: '' },
-      handle: { type: String, default: '' },
       tagline: { type: String, default: '' },
       website: { type: String, default: '' },
       address: { type: String, default: '' },

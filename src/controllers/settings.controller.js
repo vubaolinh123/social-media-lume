@@ -58,7 +58,6 @@ async function updateSettings(req, res) {
         },
         brand: {
           name: req.body.brandName || '',
-          handle: req.body.brandHandle || '',
           tagline: req.body.brandTagline || '',
           website: req.body.brandWebsite || '',
           address: req.body.brandAddress || '',

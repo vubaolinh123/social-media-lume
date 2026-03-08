@@ -30,7 +30,6 @@ ${content ? `- Description: "${content}"` : ''}
 - Add the brand tagline "${brand.tagline}" in small italic text
 - Style: Professional, cinematic, "exclusive peek" aesthetic
 - Color palette: derived from source image; cinematic treatment can be light, neutral, or dark
-- Add subtle "${brand.handle}" text
 
 IMPORTANT:
 - DO NOT add any logo or QR code (these will be added separately)
@@ -67,7 +66,6 @@ HASHTAGS: #${brand.name.replace(/\s+/g, '')} #behindthescenes #bts #noimi #lasha
 THÔNG TIN LIÊN HỆ (chèn cuối caption):
 - ${brand.name} | ${brand.phone}
 - ${brand.address}
-- ${brand.handle}
 
 Trả lời theo format JSON:
 {

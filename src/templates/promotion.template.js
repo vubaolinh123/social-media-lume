@@ -31,7 +31,6 @@ ${content ? `- Offer details: "${content}"` : ''}
 - Add sense of urgency: "LIMITED TIME" or "BOOK NOW" call-to-action text
 - Include decorative elements: gold borders, sparkles, elegant lines
 - Style: Premium luxury promotion, NOT cheap/flashy discount style
-- Add subtle "${brand.handle}" text
 
 IMPORTANT:
 - DO NOT add any logo or QR code (these will be added separately)
@@ -66,7 +65,6 @@ HASHTAGS: #${brand.name.replace(/\s+/g, '')} #khuyenmai #noimi #promotion #eyela
 THÔNG TIN LIÊN HỆ (chèn cuối caption):
 - ${brand.name} | ${brand.phone}
 - ${brand.address}
-- ${brand.handle}
 
 FORMAT JSON:
 {

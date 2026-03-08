@@ -31,7 +31,6 @@ ${content ? `- Description: "${content}"` : ''}
 - Color palette: adaptive from uploaded product image with premium styling
 - Add decorative stars or achievement elements to celebrate the result
 - Style: Showcase/portfolio — highlighting artistry and results
-- Add subtle "${brand.handle}" text
 
 IMPORTANT:
 - DO NOT add any logo or QR code (these will be added separately)
@@ -68,7 +67,6 @@ HASHTAGS: #${brand.name.replace(/\s+/g, '')} #lashspotlight #noimi #lashartist #
 THÔNG TIN LIÊN HỆ (chèn cuối caption):
 - ${brand.name} | ${brand.phone}
 - ${brand.address}
-- ${brand.handle}
 
 FORMAT JSON:
 {

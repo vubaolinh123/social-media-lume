@@ -5,7 +5,6 @@
 function buildProductReferenceInvariants({ brand, postType = 'generic', includeFooterContact = true } = {}) {
   const address = brand?.address || '';
   const phone = brand?.phone || brand?.hotline || '';
-  const handle = brand?.handle || '';
 
   const logoPaletteGuide = {
     background: '#F0ECE9 (soft warm ivory)',
@@ -20,7 +19,6 @@ FOOTER CONTACT BLOCK (MANDATORY IN AI IMAGE):
 - Footer must include EXACT text (no paraphrase, no omission):
   1) "${address}"
   2) "${phone}"
-  3) "${handle}" (if available)
 - Footer must appear exactly once (do not duplicate address/phone lines).
 - Keep footer text style coherent with logo + QR visual cluster.
 - If composition becomes crowded, reduce decorative elements first; never remove footer contact text.

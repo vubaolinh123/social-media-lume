@@ -30,7 +30,6 @@ ${content ? `- Customer review snippet: "${content}"` : ''}
  ${serviceName ? `- Service: "${serviceName}"` : ''}
 - Add star rating visual (5 stars, gold colored)
 - Style: Warm, trustworthy, premium beauty brand
-- Add subtle "${brand.handle}" text
 
 IMPORTANT:
 - DO NOT add any logo or QR code (these will be added separately)
@@ -66,7 +65,6 @@ HASHTAGS: #${brand.name.replace(/\s+/g, '')} #review #khachangnoigi #noimi #eyel
 THÔNG TIN LIÊN HỆ (chèn cuối caption):
 - ${brand.name} | ${brand.phone}
 - ${brand.address}
-- ${brand.handle}
 
 Trả lời theo format JSON:
 {
