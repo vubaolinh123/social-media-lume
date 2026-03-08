@@ -1,0 +1,8 @@
+node_modules/
+.hive
+.env
+public/uploads/*
+!public/uploads/.gitkeep
+public/output/*
+!public/output/.gitkeep
+*.log

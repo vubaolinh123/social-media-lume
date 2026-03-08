@@ -1,0 +1,185 @@
+/* ============================
+   LUMI LASHES - Custom Styles
+   ============================ */
+
+/* Base */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Upload Zone */
+.upload-zone:hover .upload-icon {
+  color: #c49a6c;
+  transform: scale(1.05);
+}
+
+.upload-icon {
+  transition: all 0.2s ease;
+}
+
+/* Drag & Drop Active State */
+.upload-zone.drag-active > div:first-of-type {
+  border-color: #c49a6c;
+  background: rgba(196, 154, 108, 0.05);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #404040;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #525252;
+}
+
+/* Toast Notifications */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  z-index: 9999;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  opacity: 0;
+  max-width: 90vw;
+}
+
+.toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+.toast.success {
+  background: rgba(16, 185, 129, 0.9);
+  color: white;
+  backdrop-filter: blur(10px);
+}
+
+.toast.error {
+  background: rgba(239, 68, 68, 0.9);
+  color: white;
+  backdrop-filter: blur(10px);
+}
+
+.toast.info {
+  background: rgba(59, 130, 246, 0.9);
+  color: white;
+  backdrop-filter: blur(10px);
+}
+
+.toast.warning {
+  background: rgba(234, 179, 8, 0.9);
+  color: white;
+  backdrop-filter: blur(10px);
+}
+
+/* Loading overlay */
+.loading-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 10, 10, 0.8);
+  backdrop-filter: blur(8px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.loading-overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.loading-spinner {
+  width: 48px;
+  height: 48px;
+  border: 3px solid rgba(196, 154, 108, 0.2);
+  border-top-color: #c49a6c;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loading-text {
+  margin-top: 16px;
+  color: #d4d4d4;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.4s ease forwards;
+}
+
+/* Mobile optimizations */
+@media (max-width: 640px) {
+  .post-type-card div {
+    padding: 12px 8px;
+  }
+  
+  textarea {
+    font-size: 16px !important; /* Prevent iOS zoom */
+  }
+  
+  input[type="text"] {
+    font-size: 16px !important; /* Prevent iOS zoom */
+  }
+}
+
+/* File input styling */
+input[type="file"] {
+  font-size: 0;
+}
+
+/* Settings Panel */
+#settingsModal.open {
+  display: flex !important;
+}
+
+#settingsModal.open #settingsPanel {
+  transform: translateX(0);
+}
+
+#settingsModal #settingsOverlay {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+#settingsModal.open #settingsOverlay {
+  opacity: 1;
+}

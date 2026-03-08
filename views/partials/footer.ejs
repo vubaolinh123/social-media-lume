@@ -1,0 +1,42 @@
+  <script src="/js/app.js"></script>
+  <script>
+    // Fetch service status on homepage
+    (async function() {
+      const badges = document.getElementById('statusBadges');
+      const warnings = document.getElementById('statusWarnings');
+      const warningText = document.getElementById('statusWarningText');
+      if (!badges) return; // Not on homepage
+
+      try {
+        const res = await fetch('/api/status', { headers: { 'Accept': 'application/json' } });
+        if (res.status === 401) {
+          badges.innerHTML = '<span class="text-xs text-yellow-400">Cần đăng nhập để xem trạng thái</span>';
+          return;
+        }
+        const data = await res.json();
+        if (!data.success) return;
+
+        const s = data.services;
+        function badge(name, ok) {
+          const colors = ok
+            ? 'bg-green-500/15 text-green-400 border border-green-500/30'
+            : 'bg-yellow-500/15 text-yellow-400 border border-yellow-500/30';
+          const dot = ok ? 'bg-green-400' : 'bg-yellow-400';
+          return `<span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium ${colors}">
+            <span class="w-1.5 h-1.5 rounded-full ${dot}"></span>${name}</span>`;
+        }
+
+        badges.innerHTML = badge('Gemini AI', s.gemini) + badge('Facebook', s.facebook)
+          + badge('Instagram', s.instagram) + badge('Telegram', s.telegram);
+
+        if (data.warnings && data.warnings.length > 0) {
+          warningText.innerHTML = data.warnings.join('<br>');
+          warnings.classList.remove('hidden');
+        }
+      } catch(e) {
+        badges.innerHTML = '<span class="text-xs text-red-400">Không thể kiểm tra trạng thái</span>';
+      }
+    })();
+  </script>
+</body>
+</html>

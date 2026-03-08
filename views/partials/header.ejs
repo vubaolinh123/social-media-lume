@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= typeof pageTitle !== 'undefined' ? pageTitle : brand.name + ' - Social Media Manager' %></title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Playfair Display', 'serif'],
+          },
+          colors: {
+            brand: {
+              50: '#fdf8f0',
+              100: '#f5ebe0',
+              200: '#e8d5c4',
+              300: '#d4b896',
+              400: '#c49a6c',
+              500: '#b8860b',
+              600: '#8b6914',
+              700: '#6b4f0e',
+              800: '#4a3609',
+              900: '#2a1f05',
+            },
+            dark: {
+              50: '#f5f5f5',
+              100: '#e5e5e5',
+              200: '#d4d4d4',
+              300: '#a3a3a3',
+              400: '#737373',
+              500: '#525252',
+              600: '#404040',
+              700: '#303030',
+              800: '#1a1a1a',
+              900: '#0a0a0a',
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-dark-900 text-white min-h-screen font-sans">

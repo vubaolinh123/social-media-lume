@@ -1,0 +1,119 @@
+<%- include('partials/header') %>
+
+<div class="min-h-screen flex flex-col">
+  <header class="bg-dark-800/80 backdrop-blur-lg border-b border-dark-700 sticky top-0 z-50">
+    <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 bg-gradient-to-br from-brand-400 to-brand-600 rounded-full flex items-center justify-center">
+          <span class="text-white font-bold text-lg">L</span>
+        </div>
+        <div>
+          <h1 class="text-lg font-bold text-white"><%= brand.name %></h1>
+          <p class="text-xs text-dark-300">Cài đặt hệ thống</p>
+        </div>
+      </div>
+      <a href="/" class="px-3 py-2 rounded-lg bg-dark-700 hover:bg-dark-600 text-sm text-white transition-colors">Về trang chính</a>
+    </div>
+  </header>
+
+  <main class="flex-1 max-w-4xl w-full mx-auto px-4 py-6 sm:py-8">
+    <form id="settingsForm" class="space-y-6">
+      <section class="bg-dark-800 border border-dark-700 rounded-2xl p-5">
+        <h2 class="text-lg font-semibold text-white mb-4">AI Settings</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="text-sm text-dark-300">Gemini API Key</label>
+            <input type="password" autocomplete="new-password" placeholder="<%= masked?.ai?.apiKey || '' %>" name="geminiApiKey" value="" class="w-full mt-1 bg-dark-900 border border-dark-600 rounded-lg px-3 py-2 text-white" />
+          </div>
+        </div>
+        <p class="text-xs text-dark-400 mt-3">Image/Text model được cấu hình ở nút răng cưa trên header trang tạo ảnh.</p>
+      </section>
+
+      <section class="bg-dark-800 border border-dark-700 rounded-2xl p-5">
+        <h2 class="text-lg font-semibold text-white mb-4">Social Tokens</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="text-sm text-dark-300">Facebook Page Access Token</label>
+            <input type="password" autocomplete="new-password" placeholder="<%= masked?.social?.facebookPageAccessToken || '' %>" name="facebookPageAccessToken" value="" class="w-full mt-1 bg-dark-900 border border-dark-600 rounded-lg px-3 py-2 text-white" />
+          </div>
+          <div>
+            <label class="text-sm text-dark-300">Instagram Access Token</label>
+            <input type="password" autocomplete="new-password" placeholder="<%= masked?.social?.instagramAccessToken || '' %>" name="instagramAccessToken" value="" class="w-full mt-1 bg-dark-900 border border-dark-600 rounded-lg px-3 py-2 text-white" />
+          </div>
+          <div>
+            <label class="text-sm text-dark-300">Telegram Bot Token</label>
+            <input type="password" autocomplete="new-password" placeholder="<%= masked?.social?.telegramBotToken || '' %>" name="telegramBotToken" value="" class="w-full mt-1 bg-dark-900 border border-dark-600 rounded-lg px-3 py-2 text-white" />
+          </div>
+          <div>
+            <label class="text-sm text-dark-300">Telegram Chat ID</label>
+            <input name="telegramChatId" value="<%= settings?.social?.telegramChatId || '' %>" class="w-full mt-1 bg-dark-900 border border-dark-600 rounded-lg px-3 py-2 text-white" />
+          </div>
+        </div>
+      </section>
+
+      <section class="bg-dark-800 border border-dark-700 rounded-2xl p-5">
+        <h2 class="text-lg font-semibold text-white mb-4">Brand Info</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div><label class="text-sm text-dark-300">Brand Name</label><input name="brandName" value="<%= settings?.brand?.name || '' %>" class="w-full mt-1 bg-dark-900 border border-dark-600 rounded-lg px-3 py-2 text-white" /></div>
+          <div><label class="text-sm text-dark-300">Brand Handle</label><input name="brandHandle" value="<%= settings?.brand?.handle || '' %>" class="w-full mt-1 bg-dark-900 border border-dark-600 rounded-lg px-3 py-2 text-white" /></div>
+          <div><label class="text-sm text-dark-300">Brand Tagline</label><input name="brandTagline" value="<%= settings?.brand?.tagline || '' %>" class="w-full mt-1 bg-dark-900 border border-dark-600 rounded-lg px-3 py-2 text-white" /></div>
+          <div><label class="text-sm text-dark-300">Website</label><input name="brandWebsite" value="<%= settings?.brand?.website || '' %>" class="w-full mt-1 bg-dark-900 border border-dark-600 rounded-lg px-3 py-2 text-white" /></div>
+          <div><label class="text-sm text-dark-300">Address</label><input name="brandAddress" value="<%= settings?.brand?.address || '' %>" class="w-full mt-1 bg-dark-900 border border-dark-600 rounded-lg px-3 py-2 text-white" /></div>
+          <div><label class="text-sm text-dark-300">Phone</label><input name="brandPhone" value="<%= settings?.brand?.phone || '' %>" class="w-full mt-1 bg-dark-900 border border-dark-600 rounded-lg px-3 py-2 text-white" /></div>
+          <div><label class="text-sm text-dark-300">Hotline</label><input name="brandHotline" value="<%= settings?.brand?.hotline || '' %>" class="w-full mt-1 bg-dark-900 border border-dark-600 rounded-lg px-3 py-2 text-white" /></div>
+        </div>
+      </section>
+
+      <div class="flex gap-3">
+        <button type="submit" class="flex-1 bg-brand-500 hover:bg-brand-600 text-white font-semibold py-3 rounded-xl">Lưu cài đặt</button>
+        <button type="button" id="testConnectionsBtn" class="flex-1 bg-dark-700 hover:bg-dark-600 text-white font-semibold py-3 rounded-xl">Test Connections</button>
+      </div>
+      <div id="connectionResult" class="text-sm text-dark-300"></div>
+    </form>
+  </main>
+</div>
+
+<script>
+document.getElementById('settingsForm')?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const form = e.currentTarget;
+  const formData = new FormData(form);
+  const payload = Object.fromEntries(formData.entries());
+
+  const res = await fetch('/api/settings', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+  const data = await res.json();
+  if (window.showToast) {
+    window.showToast(data.message || (data.success ? 'Saved' : 'Save failed'), data.success ? 'success' : 'error', 5000);
+  } else {
+    alert(data.message || 'Done');
+  }
+});
+
+document.getElementById('testConnectionsBtn')?.addEventListener('click', async () => {
+  const target = document.getElementById('connectionResult');
+  if (target) target.textContent = 'Đang test kết nối...';
+
+  const res = await fetch('/api/settings/test-connections', {
+    method: 'POST',
+    headers: { 'Accept': 'application/json' },
+  });
+  const data = await res.json();
+
+  if (!data.success) {
+    if (window.showToast) window.showToast(data.message || 'Test thất bại', 'error', 5000);
+    if (target) target.textContent = 'Test thất bại.';
+    return;
+  }
+
+  const checks = data.checks || {};
+  const summary = `Gemini: ${checks.gemini ? '✅' : '❌'} | Facebook: ${checks.facebook ? '✅' : '❌'} | Instagram: ${checks.instagram ? '✅' : '❌'} | Telegram: ${checks.telegram ? '✅' : '❌'}`;
+  if (target) target.textContent = summary;
+  if (window.showToast) window.showToast(summary, 'info', 6000);
+});
+</script>
+
+<%- include('partials/footer') %>
