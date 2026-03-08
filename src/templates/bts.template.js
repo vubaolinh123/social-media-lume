@@ -27,7 +27,7 @@ DESIGN REQUIREMENTS:
 ${title ? `- Title overlay: "${title}"` : ''}
 ${content ? `- Description: "${content}"` : ''}
  ${serviceName ? `- Technique: "${serviceName}"` : ''}
-- Add the brand tagline "${brand.tagline}" in small italic text
+- Add a short brand tagline in English (rewrite/adapt if brand tagline is not English)
 - Style: Professional, cinematic, "exclusive peek" aesthetic
 - Color palette: derived from source image; cinematic treatment can be light, neutral, or dark
 

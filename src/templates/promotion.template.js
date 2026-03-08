@@ -23,7 +23,7 @@ DESIGN REQUIREMENTS:
 - Feature the provided photo as the main visual
 - Add a bold promotional overlay with urgency-driven design
 - Include a prominent offer badge/banner (e.g., ribbon, starburst, or elegant badge)
-${title ? `- Promotion title: "${title}"` : '- Add "SPECIAL OFFER" or "ƯU ĐÃI ĐẶC BIỆT" as the headline'}
+${title ? `- Promotion title: "${title}"` : '- Add "SPECIAL OFFER" or "LIMITED-TIME OFFER" as the headline'}
 ${content ? `- Offer details: "${content}"` : ''}
  ${serviceName ? `- Service: "${serviceName}"` : ''}
 - Brand name "${brand.name}" prominently displayed

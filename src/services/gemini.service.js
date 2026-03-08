@@ -17,6 +17,12 @@ const reviewTemplate = require('../templates/review.template');
 const btsTemplate = require('../templates/bts.template');
 const promoTemplate = require('../templates/promotion.template');
 const spotlightTemplate = require('../templates/spotlight.template');
+const tutorialTemplate = require('../templates/tutorial.template');
+const newArrivalTemplate = require('../templates/newArrival.template');
+const seasonalTemplate = require('../templates/seasonal.template');
+const tipsTemplate = require('../templates/tips.template');
+const portfolioTemplate = require('../templates/portfolio.template');
+const aiRandomTemplate = require('../templates/aiRandom.template');
 
 let genAI = null;
 let textModel = null;
@@ -140,6 +146,12 @@ function getTemplate(postType) {
     case 'BTS': return btsTemplate;
     case 'Promo': return promoTemplate;
     case 'Spotlight': return spotlightTemplate;
+    case 'Tutorial': return tutorialTemplate;
+    case 'NewArrival': return newArrivalTemplate;
+    case 'Seasonal': return seasonalTemplate;
+    case 'Tips': return tipsTemplate;
+    case 'Portfolio': return portfolioTemplate;
+    case 'AIRandom': return aiRandomTemplate;
     default: throw new Error(`Unknown post type: ${postType}`);
   }
 }
@@ -257,7 +269,7 @@ Apply this analysis as hard guidance:
  * Gemini receives the original photo + a design prompt → returns a fully designed image
  *
  * @param {string} imagePath - Path to the uploaded image
- * @param {string} postType - 'BA' | 'Review' | 'BTS' | 'Promo' | 'Spotlight'
+ * @param {string} postType - 'BA' | 'Review' | 'BTS' | 'Promo' | 'Spotlight' | 'Tutorial' | 'NewArrival' | 'Seasonal' | 'Tips' | 'Portfolio' | 'AIRandom'
  * @param {object} params - { title, content, serviceName }
  * @returns {object} - { success, imageBuffer, mimeType, error }
  */
@@ -445,7 +457,7 @@ async function generateImage(imagePath, postType, params = {}, options = {}) {
 
 /**
  * Generate caption using Gemini AI
- * @param {string} postType - 'BA' | 'Review' | 'BTS' | 'Promo' | 'Spotlight'
+ * @param {string} postType - 'BA' | 'Review' | 'BTS' | 'Promo' | 'Spotlight' | 'Tutorial' | 'NewArrival' | 'Seasonal' | 'Tips' | 'Portfolio' | 'AIRandom'
  * @param {object} params - { title, content, serviceName }
  * @param {object} options - { textModel } optional runtime model override
  * @returns {object} - { caption, shortCaption, hashtags }
@@ -511,6 +523,12 @@ function getFallbackCaption(postType, params) {
     BTS: `🎬 BEHIND THE SCENES 🎬\n\n${title}\n\n${content || 'Mỗi sợi mi đều được gắn tỉ mỉ, chuyên nghiệp ✨'}\n\n📍 ${brand.name}\n📞 Hotline: ${brand.hotline}\n🌐 ${brand.website}\n\n#${brand.name.replace(/\s+/g, '')} #behindthescenes #noimi`,
     Promo: `🔥 KHUYẾN MÃI ĐẶC BIỆT 🔥\n\n${title}\n\n${content || 'Ưu đãi có hạn — đặt lịch ngay!'}\n\n📍 ${brand.name}\n📞 Hotline: ${brand.hotline}\n🌐 ${brand.website}\n\n#${brand.name.replace(/\s+/g, '')} #khuyenmai #noimi`,
     Spotlight: `⭐ LASH SPOTLIGHT ⭐\n\n${title}\n\n${content || 'Từng sợi mi được chăm chút tỉ mỉ 🖤'}\n\n📍 ${brand.name}\n📞 Hotline: ${brand.hotline}\n🌐 ${brand.website}\n\n#${brand.name.replace(/\s+/g, '')} #lashspotlight #noimi`,
+    Tutorial: `📚 LASH TUTORIAL 📚\n\n${title}\n\n${content || 'Hướng dẫn chăm sóc mi chuẩn salon để mi bền đẹp hơn mỗi ngày ✨'}\n\n📍 ${brand.name}\n📞 Hotline: ${brand.hotline}\n🌐 ${brand.website}\n\n#${brand.name.replace(/\s+/g, '')} #lashtutorial #lashcare #noimi`,
+    NewArrival: `🆕 NOW AVAILABLE 🆕\n\n${title}\n\n${content || 'Dịch vụ mới đã sẵn sàng — inbox để giữ slot sớm nhất!'}\n\n📍 ${brand.name}\n📞 Hotline: ${brand.hotline}\n🌐 ${brand.website}\n\n#${brand.name.replace(/\s+/g, '')} #newarrival #noimi #lashservice`,
+    Seasonal: `🎄 SEASONAL LASH SPECIAL 🎄\n\n${title}\n\n${content || 'Concept theo mùa giúp diện mạo của nàng luôn nổi bật tinh tế ✨'}\n\n📍 ${brand.name}\n📞 Hotline: ${brand.hotline}\n🌐 ${brand.website}\n\n#${brand.name.replace(/\s+/g, '')} #seasonalbeauty #holidaylook #noimi`,
+    Tips: `💡 PRO LASH TIPS 💡\n\n${title}\n\n${content || 'Mẹo nhỏ đúng cách giúp bộ mi bền, đẹp và nhẹ mắt hơn mỗi ngày!'}\n\n📍 ${brand.name}\n📞 Hotline: ${brand.hotline}\n🌐 ${brand.website}\n\n#${brand.name.replace(/\s+/g, '')} #lashcaretips #didyouknow #noimi`,
+    Portfolio: `🖼️ PORTFOLIO HIGHLIGHTS 🖼️\n\n${title}\n\n${content || 'Từng bộ mi là một thiết kế riêng, tinh chỉnh theo từng dáng mắt ✨'}\n\n📍 ${brand.name}\n📞 Hotline: ${brand.hotline}\n🌐 ${brand.website}\n\n#${brand.name.replace(/\s+/g, '')} #lashportfolio #ourwork #noimi`,
+    AIRandom: `🎲 AI CREATIVE CONCEPT 🎲\n\n${title}\n\n${content || 'Concept được AI tự chọn theo ảnh sản phẩm để tạo ra thiết kế độc bản ✨'}\n\n📍 ${brand.name}\n📞 Hotline: ${brand.hotline}\n🌐 ${brand.website}\n\n#${brand.name.replace(/\s+/g, '')} #aidesign #creativeconcept #noimi`,
   };
 
   return {

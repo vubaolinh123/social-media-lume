@@ -56,6 +56,14 @@ ${footerRules}
 
 POST TYPE CONTEXT:
 - Current post type is ${postType}. Keep this post-type storytelling while preserving product identity.
+
+LANGUAGE RULES (MANDATORY):
+- ALL text rendered in the generated image MUST be in English.
+- If user-provided text (title, content, service name, labels) is in Vietnamese or any non-English language, translate it to natural marketing English before rendering.
+- Apply this to every visible text element: headline, subheadline, badge text, CTA text, labels, captions-on-image, and decorative words.
+- Keep brand name "${brand?.name || ''}" exactly as provided.
+- Keep footer contact values exactly as provided for address and phone lines.
+- Do NOT render Vietnamese words or Vietnamese diacritics in image text.
 `;
 }
 

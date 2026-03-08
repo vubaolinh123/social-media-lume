@@ -25,7 +25,7 @@ DESIGN REQUIREMENTS:
 - Include decorative quotation marks or testimonial visual elements
 - Use color palette adapted from uploaded product image while maintaining premium look
 - Brand name "${brand.name}" at the top in elegant typography
-${title ? `- Review title/quote: "${title}"` : '- Add text like "KHÁCH HÀNG NÓI GÌ?" or "CLIENT REVIEW"'}
+${title ? `- Review title/quote: "${title}"` : '- Add text like "WHAT CLIENTS SAY" or "CLIENT REVIEW"'}
 ${content ? `- Customer review snippet: "${content}"` : ''}
  ${serviceName ? `- Service: "${serviceName}"` : ''}
 - Add star rating visual (5 stars, gold colored)

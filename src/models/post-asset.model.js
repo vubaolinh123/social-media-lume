@@ -18,7 +18,7 @@ const postAssetSchema = new mongoose.Schema({
   postType: {
     type: String,
     required: true,
-    enum: ['BA', 'Review', 'BTS', 'Promo', 'Spotlight'],
+    enum: ['BA', 'Review', 'BTS', 'Promo', 'Spotlight', 'Tutorial', 'NewArrival', 'Seasonal', 'Tips', 'Portfolio', 'AIRandom'],
   },
   title: { type: String, default: '' },
   content: { type: String, default: '' },

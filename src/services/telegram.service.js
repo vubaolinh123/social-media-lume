@@ -98,6 +98,12 @@ async function sendForApprovalWithRuntime(imagePath, caption, postType, runtimeC
     BTS: 'Behind The Scenes',
     Promo: 'Khuyến mãi',
     Spotlight: 'Client Spotlight',
+    Tutorial: 'Tutorial',
+    NewArrival: 'New Arrival',
+    Seasonal: 'Seasonal / Holiday',
+    Tips: 'Tips / Did You Know',
+    Portfolio: 'Portfolio Showcase',
+    AIRandom: 'AI Random Design',
   };
 
   const delayMinutes = Math.round(runtime.autoPublishDelay / 60);

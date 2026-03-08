@@ -21,7 +21,7 @@ sharp.cache({ memory: 50, files: 0, items: 100 });
 /**
  * Process an image with AI-powered template generation
  * @param {string} imagePath - Path to uploaded image
- * @param {string} postType - 'BA' | 'Review' | 'BTS' | 'Promo' | 'Spotlight'
+ * @param {string} postType - 'BA' | 'Review' | 'BTS' | 'Promo' | 'Spotlight' | 'Tutorial' | 'NewArrival' | 'Seasonal' | 'Tips' | 'Portfolio' | 'AIRandom'
  * @param {object} options - { title, content, serviceName, logoPosition, qrPosition }
  * @returns {object} - { outputPath, outputFilename, outputBuffer, aiGenerated }
  */
