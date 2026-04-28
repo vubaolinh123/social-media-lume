@@ -44,33 +44,33 @@ IMPORTANT:
  */
 function buildCaptionPrompt({ title = '', content = '', serviceName = '', brand: brandOverride = null } = {}) {
   const brand = { ...config.brand, ...(brandOverride || {}) };
-  return `Bạn là chuyên gia content marketing cho thương hiệu nối mi "${brand.name}".
-Hãy viết caption cho bài đăng BEHIND THE SCENES (BTS) trên Facebook và Instagram.
+  return `You are a content marketing expert for the lash extension brand "${brand.name}".
+Write an engaging caption for a BEHIND THE SCENES (BTS) post on Facebook and Instagram.
 
-THÔNG TIN:
-- Tiêu đề: ${title}
-${content ? `- Mô tả: ${content}` : ''}
-${serviceName ? `- Kỹ thuật: ${serviceName}` : ''}
+POST DETAILS:
+- Title: ${title}
+${content ? `- Description: ${content}` : ''}
+${serviceName ? `- Technique: ${serviceName}` : ''}
 
-YÊU CẦU:
-1. Phong cách: Professional, "nghệ thuật", behind-the-scenes
-2. Hook tạo tò mò (VD: "Đằng sau mỗi đôi mi hoàn hảo là cả một quy trình kỹ lưỡng 🖤")
-3. Highlight quy trình, dụng cụ sạch, tay nghề thợ
-4. Tạo cảm giác exclusive, premium
-5. CTA: trải nghiệm trực tiếp
-6. 150-250 từ, tiếng Việt, emoji phù hợp
-7. LƯU Ý: KHÔNG đề cập đến logo, QR code trên ảnh
+REQUIREMENTS:
+1. Tone: Professional, artistic, behind-the-scenes feel
+2. Curiosity-building hook (e.g., "Behind every perfect set of lashes is a meticulous process 🖤")
+3. Highlight the process, clean tools, and artist expertise
+4. Create a sense of exclusivity and premium quality
+5. CTA: invite readers to experience it firsthand
+6. 150-250 words, in English, with appropriate emojis
+7. NOTE: Do NOT mention the logo or QR code on the image
 
 HASHTAGS: #${brand.name.replace(/\s+/g, '')} #behindthescenes #bts #noimi #lashartist #process #${brand.name.replace(/\s+/g, '').toLowerCase()}
 
-THÔNG TIN LIÊN HỆ (chèn cuối caption):
+CONTACT INFO (add at end of caption):
 - ${brand.name} | ${brand.phone}
 - ${brand.address}
 
-Trả lời theo format JSON:
+Reply in JSON format:
 {
-  "caption": "Nội dung caption đầy đủ bao gồm hashtags",
-  "shortCaption": "Caption ngắn gọn cho story (tối đa 50 từ)",
+  "caption": "Full caption including hashtags",
+  "shortCaption": "Short caption for story (max 50 words)",
   "hashtags": ["hashtag1", "hashtag2", ...]
 }`;
 }

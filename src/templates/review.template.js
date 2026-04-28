@@ -44,32 +44,32 @@ IMPORTANT:
  */
 function buildCaptionPrompt({ title = '', content = '', serviceName = '', brand: brandOverride = null } = {}) {
   const brand = { ...config.brand, ...(brandOverride || {}) };
-  return `Bạn là chuyên gia content marketing cho thương hiệu nối mi "${brand.name}".
-Hãy viết caption cho bài đăng REVIEW KHÁCH HÀNG trên Facebook và Instagram.
+  return `You are a content marketing expert for the lash extension brand "${brand.name}".
+Write an engaging caption for a CUSTOMER REVIEW post on Facebook and Instagram.
 
-THÔNG TIN:
-- Tiêu đề: ${title}
-${content ? `- Nội dung review: ${content}` : ''}
-${serviceName ? `- Dịch vụ: ${serviceName}` : ''}
+POST DETAILS:
+- Title: ${title}
+${content ? `- Review content: ${content}` : ''}
+${serviceName ? `- Service: ${serviceName}` : ''}
 
-YÊU CẦU:
-1. Phong cách: Chân thật, ấm áp, tạo trust
-2. Hook chân thật (VD: "Reaction của khách sau khi nhìn gương — không cần nói thêm 🥹✨")
-3. Trích dẫn/paraphrase review khách
-4. CTA mềm: mời đặt lịch
-5. 150-250 từ, tiếng Việt, emoji phù hợp
-6. LƯU Ý: KHÔNG đề cập đến logo, QR code trên ảnh
+REQUIREMENTS:
+1. Tone: Authentic, warm, trust-building
+2. Genuine hook (e.g., "Her reaction when she looked in the mirror — no words needed 🥹✨")
+3. Quote or paraphrase the customer review
+4. Soft CTA: invite readers to book an appointment
+5. 150-250 words, in English, with appropriate emojis
+6. NOTE: Do NOT mention the logo or QR code on the image
 
 HASHTAGS: #${brand.name.replace(/\s+/g, '')} #review #khachangnoigi #noimi #eyelashes #${brand.name.replace(/\s+/g, '').toLowerCase()}
 
-THÔNG TIN LIÊN HỆ (chèn cuối caption):
+CONTACT INFO (add at end of caption):
 - ${brand.name} | ${brand.phone}
 - ${brand.address}
 
-Trả lời theo format JSON:
+Reply in JSON format:
 {
-  "caption": "Nội dung caption đầy đủ bao gồm hashtags",
-  "shortCaption": "Caption ngắn gọn cho story (tối đa 50 từ)",
+  "caption": "Full caption including hashtags",
+  "shortCaption": "Short caption for story (max 50 words)",
   "hashtags": ["hashtag1", "hashtag2", ...]
 }`;
 }

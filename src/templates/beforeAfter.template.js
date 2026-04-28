@@ -46,32 +46,32 @@ IMPORTANT:
  */
 function buildCaptionPrompt({ title = '', content = '', serviceName = '', brand: brandOverride = null } = {}) {
   const brand = { ...config.brand, ...(brandOverride || {}) };
-  return `Bạn là chuyên gia content marketing cho thương hiệu nối mi "${brand.name}".
-Hãy viết caption cho bài đăng BEFORE/AFTER trên Facebook và Instagram.
+  return `You are a content marketing expert for the lash extension brand "${brand.name}".
+Write an engaging caption for a BEFORE/AFTER post on Facebook and Instagram.
 
-THÔNG TIN BÀI VIẾT:
-- Tiêu đề: ${title}
-${content ? `- Nội dung thêm: ${content}` : ''}
-${serviceName ? `- Dịch vụ: ${serviceName}` : ''}
+POST DETAILS:
+- Title: ${title}
+${content ? `- Additional content: ${content}` : ''}
+${serviceName ? `- Service: ${serviceName}` : ''}
 
-YÊU CẦU:
-1. Phong cách: Sang trọng, tự tin, WOW effect
-2. Hook đầu bài phải gây tò mò (VD: "Khách đến với lông thưa, sau 2 tiếng — kết quả nói lên tất cả 🖤")
-3. Nhấn mạnh sự thay đổi before vs after
-4. Kêu gọi khách đặt lịch (CTA)
-5. 150-250 từ, tiếng Việt, có emoji phù hợp
-6. LƯU Ý QUAN TRỌNG: KHÔNG đề cập đến logo, QR code trên ảnh trong caption — hệ thống tự chèn vào ảnh
+REQUIREMENTS:
+1. Tone: Luxurious, confident, WOW effect
+2. Opening hook must spark curiosity (e.g., "She came in with sparse lashes — two hours later, the results speak for themselves 🖤")
+3. Highlight the before vs. after transformation
+4. Include a clear call to action to book an appointment (CTA)
+5. 150-250 words, in English, with appropriate emojis
+6. IMPORTANT NOTE: Do NOT mention the logo or QR code on the image in the caption — the system adds these to the image automatically
 
 HASHTAGS: #${brand.name.replace(/\s+/g, '')} #noimi #beforeafter #eyelashes #${brand.name.replace(/\s+/g, '').toLowerCase()} #lammi #lashextensions
 
-THÔNG TIN LIÊN HỆ (chèn cuối caption):
+CONTACT INFO (add at end of caption):
 - ${brand.name} | ${brand.phone}
 - ${brand.address}
 
-Trả lời theo format JSON:
+Reply in JSON format:
 {
-  "caption": "Nội dung caption đầy đủ bao gồm hashtags",
-  "shortCaption": "Caption ngắn gọn cho story (tối đa 50 từ)",
+  "caption": "Full caption including hashtags",
+  "shortCaption": "Short caption for story (max 50 words)",
   "hashtags": ["hashtag1", "hashtag2", ...]
 }`;
 }

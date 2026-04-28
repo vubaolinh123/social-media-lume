@@ -37,32 +37,32 @@ IMPORTANT:
 
 function buildCaptionPrompt({ title = '', content = '', serviceName = '', brand: brandOverride = null } = {}) {
   const brand = { ...config.brand, ...(brandOverride || {}) };
-  return `Bạn là chuyên gia content marketing cho thương hiệu nối mi "${brand.name}".
-Hãy viết caption cho bài đăng TIPS / DID YOU KNOW trên Facebook và Instagram.
+  return `You are a content marketing expert for the lash extension brand "${brand.name}".
+Write an engaging caption for a TIPS / DID YOU KNOW post on Facebook and Instagram.
 
-THÔNG TIN:
-- Tiêu đề: ${title || 'Lash Care Tips'}
-${content ? `- Nội dung thêm: ${content}` : ''}
-${serviceName ? `- Kỹ thuật liên quan: ${serviceName}` : ''}
+POST DETAILS:
+- Title: ${title || 'Lash Care Tips'}
+${content ? `- Additional content: ${content}` : ''}
+${serviceName ? `- Related technique: ${serviceName}` : ''}
 
-YÊU CẦU:
-1. Phong cách: Chuyên môn, gần gũi, hữu ích
-2. Hook dạng tip (VD: "Những lỗi nhỏ khiến bộ mi nhanh rụng — nàng có mắc phải không? 👀")
-3. Trình bày dạng list 3-5 tips dễ nhớ
-4. CTA: lưu bài + inbox để tư vấn chuyên sâu
-5. 150-250 từ, tiếng Việt, emoji phù hợp
-6. LƯU Ý: KHÔNG đề cập logo/QR trên ảnh
+REQUIREMENTS:
+1. Tone: Expert, relatable, genuinely helpful
+2. Tip-style hook (e.g., "Small mistakes that make your lashes fall out faster — are you making them? 👀")
+3. Present a list of 3-5 easy-to-remember tips
+4. CTA: save the post + DM for in-depth consultation
+5. 150-250 words, in English, with appropriate emojis
+6. NOTE: Do NOT mention the logo or QR code on the image
 
 HASHTAGS: #${brand.name.replace(/\s+/g, '')} #lashcaretips #didyouknow #noimi #beautyeducation #${brand.name.replace(/\s+/g, '').toLowerCase()}
 
-THÔNG TIN LIÊN HỆ (chèn cuối caption):
+CONTACT INFO (add at end of caption):
 - ${brand.name} | ${brand.phone}
 - ${brand.address}
 
-FORMAT JSON:
+JSON FORMAT:
 {
-  "caption": "caption đầy đủ + hashtags",
-  "shortCaption": "tối đa 50 từ cho story",
+  "caption": "full caption + hashtags",
+  "shortCaption": "max 50 words for story",
   "hashtags": ["hashtag1", "hashtag2"]
 }`;
 }

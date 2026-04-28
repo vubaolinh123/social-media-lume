@@ -518,22 +518,22 @@ function getFallbackCaption(postType, params) {
   const content = params.content || '';
 
   const templates = {
-    BA: `✨ BEFORE & AFTER ✨\n\n${title}\n\n${content || 'Kết quả nói lên tất cả! Từ lông mi thưa thớt đến đôi mắt cuốn hút 🖤'}\n\n📍 ${brand.name}\n📞 Hotline: ${brand.hotline}\n🌐 ${brand.website}\n\n#${brand.name.replace(/\s+/g, '')} #noimi #beforeafter #lamdepmat`,
-    Review: `💕 REVIEW KHÁCH HÀNG 💕\n\n${title}\n\n${content || 'Cảm ơn chị đã tin tưởng! Reaction khi nhìn gương thật sự không thể nào quên 😍'}\n\n📍 ${brand.name}\n📞 Hotline: ${brand.hotline}\n🌐 ${brand.website}\n\n#${brand.name.replace(/\s+/g, '')} #reviewkhachhang #noimi`,
-    BTS: `🎬 BEHIND THE SCENES 🎬\n\n${title}\n\n${content || 'Mỗi sợi mi đều được gắn tỉ mỉ, chuyên nghiệp ✨'}\n\n📍 ${brand.name}\n📞 Hotline: ${brand.hotline}\n🌐 ${brand.website}\n\n#${brand.name.replace(/\s+/g, '')} #behindthescenes #noimi`,
-    Promo: `🔥 KHUYẾN MÃI ĐẶC BIỆT 🔥\n\n${title}\n\n${content || 'Ưu đãi có hạn — đặt lịch ngay!'}\n\n📍 ${brand.name}\n📞 Hotline: ${brand.hotline}\n🌐 ${brand.website}\n\n#${brand.name.replace(/\s+/g, '')} #khuyenmai #noimi`,
-    Spotlight: `⭐ LASH SPOTLIGHT ⭐\n\n${title}\n\n${content || 'Từng sợi mi được chăm chút tỉ mỉ 🖤'}\n\n📍 ${brand.name}\n📞 Hotline: ${brand.hotline}\n🌐 ${brand.website}\n\n#${brand.name.replace(/\s+/g, '')} #lashspotlight #noimi`,
-    Tutorial: `📚 LASH TUTORIAL 📚\n\n${title}\n\n${content || 'Hướng dẫn chăm sóc mi chuẩn salon để mi bền đẹp hơn mỗi ngày ✨'}\n\n📍 ${brand.name}\n📞 Hotline: ${brand.hotline}\n🌐 ${brand.website}\n\n#${brand.name.replace(/\s+/g, '')} #lashtutorial #lashcare #noimi`,
-    NewArrival: `🆕 NOW AVAILABLE 🆕\n\n${title}\n\n${content || 'Dịch vụ mới đã sẵn sàng — inbox để giữ slot sớm nhất!'}\n\n📍 ${brand.name}\n📞 Hotline: ${brand.hotline}\n🌐 ${brand.website}\n\n#${brand.name.replace(/\s+/g, '')} #newarrival #noimi #lashservice`,
-    Seasonal: `🎄 SEASONAL LASH SPECIAL 🎄\n\n${title}\n\n${content || 'Concept theo mùa giúp diện mạo của nàng luôn nổi bật tinh tế ✨'}\n\n📍 ${brand.name}\n📞 Hotline: ${brand.hotline}\n🌐 ${brand.website}\n\n#${brand.name.replace(/\s+/g, '')} #seasonalbeauty #holidaylook #noimi`,
-    Tips: `💡 PRO LASH TIPS 💡\n\n${title}\n\n${content || 'Mẹo nhỏ đúng cách giúp bộ mi bền, đẹp và nhẹ mắt hơn mỗi ngày!'}\n\n📍 ${brand.name}\n📞 Hotline: ${brand.hotline}\n🌐 ${brand.website}\n\n#${brand.name.replace(/\s+/g, '')} #lashcaretips #didyouknow #noimi`,
-    Portfolio: `🖼️ PORTFOLIO HIGHLIGHTS 🖼️\n\n${title}\n\n${content || 'Từng bộ mi là một thiết kế riêng, tinh chỉnh theo từng dáng mắt ✨'}\n\n📍 ${brand.name}\n📞 Hotline: ${brand.hotline}\n🌐 ${brand.website}\n\n#${brand.name.replace(/\s+/g, '')} #lashportfolio #ourwork #noimi`,
-    AIRandom: `🎲 AI CREATIVE CONCEPT 🎲\n\n${title}\n\n${content || 'Concept được AI tự chọn theo ảnh sản phẩm để tạo ra thiết kế độc bản ✨'}\n\n📍 ${brand.name}\n📞 Hotline: ${brand.hotline}\n🌐 ${brand.website}\n\n#${brand.name.replace(/\s+/g, '')} #aidesign #creativeconcept #noimi`,
+    BA: `✨ BEFORE & AFTER ✨\n\n${title}\n\n${content || 'The results speak for themselves! From sparse lashes to captivating eyes 🖤'}\n\n📍 ${brand.name}\n📞 Hotline: ${brand.hotline}\n🌐 ${brand.website}\n\n#${brand.name.replace(/\s+/g, '')} #noimi #beforeafter #lamdepmat`,
+    Review: `💕 CLIENT REVIEW 💕\n\n${title}\n\n${content || 'Thank you for trusting us! Her reaction when she looked in the mirror was truly unforgettable 😍'}\n\n📍 ${brand.name}\n📞 Hotline: ${brand.hotline}\n🌐 ${brand.website}\n\n#${brand.name.replace(/\s+/g, '')} #reviewkhachhang #noimi`,
+    BTS: `🎬 BEHIND THE SCENES 🎬\n\n${title}\n\n${content || 'Every single lash placed with precision and care ✨'}\n\n📍 ${brand.name}\n📞 Hotline: ${brand.hotline}\n🌐 ${brand.website}\n\n#${brand.name.replace(/\s+/g, '')} #behindthescenes #noimi`,
+    Promo: `🔥 SPECIAL OFFER 🔥\n\n${title}\n\n${content || 'Limited-time deal — book your appointment now!'}\n\n📍 ${brand.name}\n📞 Hotline: ${brand.hotline}\n🌐 ${brand.website}\n\n#${brand.name.replace(/\s+/g, '')} #khuyenmai #noimi`,
+    Spotlight: `⭐ LASH SPOTLIGHT ⭐\n\n${title}\n\n${content || 'Every lash placed with meticulous attention to detail 🖤'}\n\n📍 ${brand.name}\n📞 Hotline: ${brand.hotline}\n🌐 ${brand.website}\n\n#${brand.name.replace(/\s+/g, '')} #lashspotlight #noimi`,
+    Tutorial: `📚 LASH TUTORIAL 📚\n\n${title}\n\n${content || 'Salon-grade lash care tips to keep your lashes looking gorgeous every day ✨'}\n\n📍 ${brand.name}\n📞 Hotline: ${brand.hotline}\n🌐 ${brand.website}\n\n#${brand.name.replace(/\s+/g, '')} #lashtutorial #lashcare #noimi`,
+    NewArrival: `🆕 NOW AVAILABLE 🆕\n\n${title}\n\n${content || 'Our newest service is ready — DM us to secure your slot first!'}\n\n📍 ${brand.name}\n📞 Hotline: ${brand.hotline}\n🌐 ${brand.website}\n\n#${brand.name.replace(/\s+/g, '')} #newarrival #noimi #lashservice`,
+    Seasonal: `🎄 SEASONAL LASH SPECIAL 🎄\n\n${title}\n\n${content || 'A seasonal concept to keep your look elegantly on-trend all season long ✨'}\n\n📍 ${brand.name}\n📞 Hotline: ${brand.hotline}\n🌐 ${brand.website}\n\n#${brand.name.replace(/\s+/g, '')} #seasonalbeauty #holidaylook #noimi`,
+    Tips: `💡 PRO LASH TIPS 💡\n\n${title}\n\n${content || 'Simple habits done right to keep your lashes lasting longer and looking lighter every day!'}\n\n📍 ${brand.name}\n📞 Hotline: ${brand.hotline}\n🌐 ${brand.website}\n\n#${brand.name.replace(/\s+/g, '')} #lashcaretips #didyouknow #noimi`,
+    Portfolio: `🖼️ PORTFOLIO HIGHLIGHTS 🖼️\n\n${title}\n\n${content || 'Every lash set is its own unique design, tailored to each eye shape ✨'}\n\n📍 ${brand.name}\n📞 Hotline: ${brand.hotline}\n🌐 ${brand.website}\n\n#${brand.name.replace(/\s+/g, '')} #lashportfolio #ourwork #noimi`,
+    AIRandom: `🎲 AI CREATIVE CONCEPT 🎲\n\n${title}\n\n${content || 'AI-selected concept based on your uploaded product photo — a one-of-a-kind design ✨'}\n\n📍 ${brand.name}\n📞 Hotline: ${brand.hotline}\n🌐 ${brand.website}\n\n#${brand.name.replace(/\s+/g, '')} #aidesign #creativeconcept #noimi`,
   };
 
   return {
     caption: templates[postType] || templates.BA,
-    shortCaption: title || `${brand.name} - Nối mi chuyên nghiệp`,
+    shortCaption: title || `${brand.name} - Professional Lash Extensions`,
     hashtags: [`#${brand.name.replace(/\s+/g, '')}`, '#noimi'],
   };
 }

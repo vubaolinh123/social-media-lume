@@ -50,36 +50,36 @@ IMPORTANT:
 
 function buildCaptionPrompt({ title = '', content = '', serviceName = '', brand: brandOverride = null } = {}) {
   const brand = { ...config.brand, ...(brandOverride || {}) };
-  return `Bạn là chuyên gia content marketing cho thương hiệu nối mi "${brand.name}".
-Hãy viết caption cho bài đăng AI RANDOM DESIGN trên Facebook và Instagram.
+  return `You are a content marketing expert for the lash extension brand "${brand.name}".
+Write an engaging caption for an AI RANDOM DESIGN post on Facebook and Instagram.
 
-BỐI CẢNH:
-- Thiết kế ảnh được AI tự chọn concept dựa trên ảnh sản phẩm user upload.
-- Caption cần bám theo tinh thần concept hình ảnh: premium, sáng tạo, thuyết phục.
+CONTEXT:
+- The image design concept was chosen by AI based on the uploaded product photo.
+- The caption should match the spirit of the visual concept: premium, creative, persuasive.
 
-THÔNG TIN:
-- Tiêu đề tham khảo: ${title || 'AI Creative Concept'}
-${content ? `- Nội dung thêm: ${content}` : ''}
-${serviceName ? `- Kỹ thuật/dịch vụ: ${serviceName}` : ''}
+POST DETAILS:
+- Reference title: ${title || 'AI Creative Concept'}
+${content ? `- Additional content: ${content}` : ''}
+${serviceName ? `- Technique/service: ${serviceName}` : ''}
 
-YÊU CẦU:
-1. Phong cách: Sáng tạo, tự tin, đẳng cấp
-2. Hook ấn tượng (VD: "Khi không giới hạn ý tưởng, vẻ đẹp được kể bằng một ngôn ngữ rất khác ✨")
-3. Mô tả điểm nổi bật concept và giá trị cho khách hàng
-4. CTA: đặt lịch/inbox để nhận concept cá nhân hóa
-5. 150-250 từ, tiếng Việt, emoji phù hợp
-6. LƯU Ý: KHÔNG đề cập logo/QR trên ảnh
+REQUIREMENTS:
+1. Tone: Creative, confident, high-class
+2. Striking hook (e.g., "When creativity has no limits, beauty speaks an entirely different language ✨")
+3. Describe the concept's highlights and the value it delivers to the client
+4. CTA: book an appointment / DM to receive a personalized concept
+5. 150-250 words, in English, with appropriate emojis
+6. NOTE: Do NOT mention the logo or QR code on the image
 
 HASHTAGS: #${brand.name.replace(/\s+/g, '')} #aidesign #creativeconcept #noimi #lashart #${brand.name.replace(/\s+/g, '').toLowerCase()}
 
-THÔNG TIN LIÊN HỆ (chèn cuối caption):
+CONTACT INFO (add at end of caption):
 - ${brand.name} | ${brand.phone}
 - ${brand.address}
 
-FORMAT JSON:
+JSON FORMAT:
 {
-  "caption": "caption đầy đủ + hashtags",
-  "shortCaption": "tối đa 50 từ cho story",
+  "caption": "full caption + hashtags",
+  "shortCaption": "max 50 words for story",
   "hashtags": ["hashtag1", "hashtag2"]
 }`;
 }

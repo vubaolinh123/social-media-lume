@@ -44,32 +44,32 @@ IMPORTANT:
  */
 function buildCaptionPrompt({ title = '', content = '', serviceName = '', brand: brandOverride = null } = {}) {
   const brand = { ...config.brand, ...(brandOverride || {}) };
-  return `Bạn là chuyên gia content marketing cho thương hiệu nối mi "${brand.name}".
-Hãy viết caption cho bài đăng KHUYẾN MÃI / PROMOTION trên Facebook và Instagram.
+  return `You are a content marketing expert for the lash extension brand "${brand.name}".
+Write an engaging caption for a PROMOTION / SPECIAL OFFER post on Facebook and Instagram.
 
-THÔNG TIN:
-- Tiêu đề: ${title || 'Special Offer'}
-${content ? `- Chi tiết KM: ${content}` : ''}
-${serviceName ? `- Dịch vụ: ${serviceName}` : ''}
+POST DETAILS:
+- Title: ${title || 'Special Offer'}
+${content ? `- Offer details: ${content}` : ''}
+${serviceName ? `- Service: ${serviceName}` : ''}
 
-YÊU CẦU:
-1. Phong cách: Sang trọng, tạo urgency, FOMO
-2. Hook mạnh (VD: "CHỈ TRONG TUẦN NÀY — Ưu đãi cực sốc cho các nàng yêu mi 🔥")
-3. Nhấn mạnh giá trị ưu đãi, thời hạn
-4. CTA rõ: đặt lịch ngay, inbox, gọi hotline
-5. 150-250 từ, tiếng Việt, emoji phù hợp
-6. LƯU Ý: KHÔNG đề cập đến logo/QR trên ảnh
+REQUIREMENTS:
+1. Tone: Luxurious, urgency-driven, FOMO
+2. Strong hook (e.g., "THIS WEEK ONLY — An incredible deal for all lash lovers 🔥")
+3. Highlight the offer value and deadline
+4. Clear CTA: book now, DM us, call the hotline
+5. 150-250 words, in English, with appropriate emojis
+6. NOTE: Do NOT mention the logo or QR code on the image
 
 HASHTAGS: #${brand.name.replace(/\s+/g, '')} #khuyenmai #noimi #promotion #eyelashes #${brand.name.replace(/\s+/g, '').toLowerCase()}
 
-THÔNG TIN LIÊN HỆ (chèn cuối caption):
+CONTACT INFO (add at end of caption):
 - ${brand.name} | ${brand.phone}
 - ${brand.address}
 
-FORMAT JSON:
+JSON FORMAT:
 {
-  "caption": "caption đầy đủ + hashtags",
-  "shortCaption": "tối đa 50 từ cho story",
+  "caption": "full caption + hashtags",
+  "shortCaption": "max 50 words for story",
   "hashtags": ["hashtag1", "hashtag2"]
 }`;
 }

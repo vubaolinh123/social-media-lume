@@ -37,32 +37,32 @@ IMPORTANT:
 
 function buildCaptionPrompt({ title = '', content = '', serviceName = '', brand: brandOverride = null } = {}) {
   const brand = { ...config.brand, ...(brandOverride || {}) };
-  return `Bạn là chuyên gia content marketing cho thương hiệu nối mi "${brand.name}".
-Hãy viết caption cho bài đăng PORTFOLIO / SHOWCASE trên Facebook và Instagram.
+  return `You are a content marketing expert for the lash extension brand "${brand.name}".
+Write an engaging caption for a PORTFOLIO / SHOWCASE post on Facebook and Instagram.
 
-THÔNG TIN:
-- Tiêu đề: ${title || 'Portfolio Highlights'}
-${content ? `- Nội dung thêm: ${content}` : ''}
-${serviceName ? `- Kỹ thuật nổi bật: ${serviceName}` : ''}
+POST DETAILS:
+- Title: ${title || 'Portfolio Highlights'}
+${content ? `- Additional content: ${content}` : ''}
+${serviceName ? `- Featured technique: ${serviceName}` : ''}
 
-YÊU CẦU:
-1. Phong cách: Đẳng cấp, nghệ thuật, chuyên nghiệp
-2. Hook tôn vinh tay nghề (VD: "Mỗi bộ mi là một dấu ấn riêng — tinh chỉnh theo từng dáng mắt ✨")
-3. Nhấn mạnh sự đa dạng style và độ chỉn chu
-4. CTA: đặt lịch để được tư vấn design phù hợp
-5. 150-250 từ, tiếng Việt, emoji phù hợp
-6. LƯU Ý: KHÔNG đề cập logo/QR trên ảnh
+REQUIREMENTS:
+1. Tone: High-class, artistic, professional
+2. Hook celebrating the craftsmanship (e.g., "Every lash set is its own signature — tailored to each unique eye shape ✨")
+3. Highlight the diversity of styles and attention to detail
+4. CTA: book an appointment for a personalized design consultation
+5. 150-250 words, in English, with appropriate emojis
+6. NOTE: Do NOT mention the logo or QR code on the image
 
 HASHTAGS: #${brand.name.replace(/\s+/g, '')} #lashportfolio #ourwork #noimi #lashartist #${brand.name.replace(/\s+/g, '').toLowerCase()}
 
-THÔNG TIN LIÊN HỆ (chèn cuối caption):
+CONTACT INFO (add at end of caption):
 - ${brand.name} | ${brand.phone}
 - ${brand.address}
 
-FORMAT JSON:
+JSON FORMAT:
 {
-  "caption": "caption đầy đủ + hashtags",
-  "shortCaption": "tối đa 50 từ cho story",
+  "caption": "full caption + hashtags",
+  "shortCaption": "max 50 words for story",
   "hashtags": ["hashtag1", "hashtag2"]
 }`;
 }

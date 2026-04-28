@@ -45,33 +45,33 @@ IMPORTANT:
  */
 function buildCaptionPrompt({ title = '', content = '', serviceName = '', brand: brandOverride = null } = {}) {
   const brand = { ...config.brand, ...(brandOverride || {}) };
-  return `Bạn là chuyên gia content marketing cho thương hiệu nối mi "${brand.name}".
-Hãy viết caption cho bài đăng CLIENT SPOTLIGHT / SHOWCASE trên Facebook và Instagram.
+  return `You are a content marketing expert for the lash extension brand "${brand.name}".
+Write an engaging caption for a CLIENT SPOTLIGHT / SHOWCASE post on Facebook and Instagram.
 
-THÔNG TIN:
-- Tiêu đề: ${title || 'Lash Spotlight'}
-${content ? `- Mô tả: ${content}` : ''}
-${serviceName ? `- Kỹ thuật: ${serviceName}` : ''}
+POST DETAILS:
+- Title: ${title || 'Lash Spotlight'}
+${content ? `- Description: ${content}` : ''}
+${serviceName ? `- Technique: ${serviceName}` : ''}
 
-YÊU CẦU:
-1. Phong cách: Tôn vinh kết quả, sang trọng, professional
-2. Hook: spotlight vào chi tiết đẹp (VD: "Từng sợi mi được chăm chút tỉ mỉ — khi nghệ thuật gặp tay nghề ✨")
-3. Mô tả kỹ thuật mi (Classic, Volume, Mega, Hybrid...)
-4. Highlight sự khác biệt & chất lượng
-5. CTA: đặt lịch trải nghiệm
-6. 150-250 từ, tiếng Việt, emoji phù hợp
-7. LƯU Ý: KHÔNG đề cập đến logo/QR trên ảnh
+REQUIREMENTS:
+1. Tone: Celebratory, luxurious, professional
+2. Hook spotlighting the beautiful details (e.g., "Every single lash placed with care — where artistry meets skill ✨")
+3. Describe the lash technique (Classic, Volume, Mega, Hybrid...)
+4. Highlight the difference and quality of the result
+5. CTA: invite readers to book and experience it
+6. 150-250 words, in English, with appropriate emojis
+7. NOTE: Do NOT mention the logo or QR code on the image
 
 HASHTAGS: #${brand.name.replace(/\s+/g, '')} #lashspotlight #noimi #lashartist #eyelashextensions #${brand.name.replace(/\s+/g, '').toLowerCase()}
 
-THÔNG TIN LIÊN HỆ (chèn cuối caption):
+CONTACT INFO (add at end of caption):
 - ${brand.name} | ${brand.phone}
 - ${brand.address}
 
-FORMAT JSON:
+JSON FORMAT:
 {
-  "caption": "caption đầy đủ + hashtags",
-  "shortCaption": "tối đa 50 từ cho story",
+  "caption": "full caption + hashtags",
+  "shortCaption": "max 50 words for story",
   "hashtags": ["hashtag1", "hashtag2"]
 }`;
 }

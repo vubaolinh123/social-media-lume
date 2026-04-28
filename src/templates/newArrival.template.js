@@ -37,32 +37,32 @@ IMPORTANT:
 
 function buildCaptionPrompt({ title = '', content = '', serviceName = '', brand: brandOverride = null } = {}) {
   const brand = { ...config.brand, ...(brandOverride || {}) };
-  return `Bạn là chuyên gia content marketing cho thương hiệu nối mi "${brand.name}".
-Hãy viết caption cho bài đăng NEW ARRIVAL / NOW AVAILABLE trên Facebook và Instagram.
+  return `You are a content marketing expert for the lash extension brand "${brand.name}".
+Write an engaging caption for a NEW ARRIVAL / NOW AVAILABLE post on Facebook and Instagram.
 
-THÔNG TIN:
-- Tiêu đề: ${title || 'Now Available'}
-${content ? `- Mô tả: ${content}` : ''}
-${serviceName ? `- Dịch vụ/sản phẩm mới: ${serviceName}` : ''}
+POST DETAILS:
+- Title: ${title || 'Now Available'}
+${content ? `- Description: ${content}` : ''}
+${serviceName ? `- New service/product: ${serviceName}` : ''}
 
-YÊU CẦU:
-1. Phong cách: Hào hứng, premium, tạo FOMO nhẹ
-2. Hook ra mắt (VD: "Đã lên kệ/đã mở lịch — trải nghiệm mới cho nàng mê mi ✨")
-3. Nhấn mạnh điểm mới và lợi ích chính
-4. CTA mạnh: đặt lịch sớm / inbox nhận slot ưu tiên
-5. 150-250 từ, tiếng Việt, emoji phù hợp
-6. LƯU Ý: KHÔNG đề cập logo/QR trên ảnh
+REQUIREMENTS:
+1. Tone: Excited, premium, light FOMO
+2. Launch hook (e.g., "Now live — a brand new experience for lash lovers ✨")
+3. Highlight what's new and the key benefits
+4. Strong CTA: book early / DM to secure a priority slot
+5. 150-250 words, in English, with appropriate emojis
+6. NOTE: Do NOT mention the logo or QR code on the image
 
 HASHTAGS: #${brand.name.replace(/\s+/g, '')} #newarrival #nowavailable #noimi #lashservice #${brand.name.replace(/\s+/g, '').toLowerCase()}
 
-THÔNG TIN LIÊN HỆ (chèn cuối caption):
+CONTACT INFO (add at end of caption):
 - ${brand.name} | ${brand.phone}
 - ${brand.address}
 
-FORMAT JSON:
+JSON FORMAT:
 {
-  "caption": "caption đầy đủ + hashtags",
-  "shortCaption": "tối đa 50 từ cho story",
+  "caption": "full caption + hashtags",
+  "shortCaption": "max 50 words for story",
   "hashtags": ["hashtag1", "hashtag2"]
 }`;
 }

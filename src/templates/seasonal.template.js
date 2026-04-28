@@ -40,32 +40,32 @@ IMPORTANT:
 
 function buildCaptionPrompt({ title = '', content = '', serviceName = '', brand: brandOverride = null } = {}) {
   const brand = { ...config.brand, ...(brandOverride || {}) };
-  return `Bạn là chuyên gia content marketing cho thương hiệu nối mi "${brand.name}".
-Hãy viết caption cho bài đăng SEASONAL / HOLIDAY trên Facebook và Instagram.
+  return `You are a content marketing expert for the lash extension brand "${brand.name}".
+Write an engaging caption for a SEASONAL / HOLIDAY post on Facebook and Instagram.
 
-THÔNG TIN:
-- Tiêu đề: ${title || 'Seasonal Lash Special'}
-${content ? `- Nội dung thêm: ${content}` : ''}
-${serviceName ? `- Dịch vụ: ${serviceName}` : ''}
+POST DETAILS:
+- Title: ${title || 'Seasonal Lash Special'}
+${content ? `- Additional content: ${content}` : ''}
+${serviceName ? `- Service: ${serviceName}` : ''}
 
-YÊU CẦU:
-1. Phong cách: Theo mùa, tinh tế, sang trọng
-2. Hook theo bối cảnh mùa/lễ (VD: "Mùa lễ này, đôi mắt nàng xứng đáng một điểm nhấn thật tinh tế ✨")
-3. Liên kết cảm xúc theo mùa với nhu cầu làm đẹp
-4. CTA: đặt lịch theo mùa/khung giờ cao điểm
-5. 150-250 từ, tiếng Việt, emoji phù hợp
-6. LƯU Ý: KHÔNG đề cập logo/QR trên ảnh
+REQUIREMENTS:
+1. Tone: Seasonal, refined, luxurious
+2. Seasonal/holiday hook (e.g., "This holiday season, your eyes deserve a truly elegant touch ✨")
+3. Connect seasonal emotion with a beauty need
+4. CTA: book during the season / peak period slots
+5. 150-250 words, in English, with appropriate emojis
+6. NOTE: Do NOT mention the logo or QR code on the image
 
 HASHTAGS: #${brand.name.replace(/\s+/g, '')} #seasonalbeauty #holidaylook #noimi #lashextensions #${brand.name.replace(/\s+/g, '').toLowerCase()}
 
-THÔNG TIN LIÊN HỆ (chèn cuối caption):
+CONTACT INFO (add at end of caption):
 - ${brand.name} | ${brand.phone}
 - ${brand.address}
 
-FORMAT JSON:
+JSON FORMAT:
 {
-  "caption": "caption đầy đủ + hashtags",
-  "shortCaption": "tối đa 50 từ cho story",
+  "caption": "full caption + hashtags",
+  "shortCaption": "max 50 words for story",
   "hashtags": ["hashtag1", "hashtag2"]
 }`;
 }
