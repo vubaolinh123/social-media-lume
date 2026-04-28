@@ -9,8 +9,8 @@ const { buildRuntimeConfig } = require('../services/runtime-config.service');
 function getServiceStatus() {
   return {
     gemini: !!config.gemini.apiKey,
-    facebook: !!config.facebook.pageAccessToken,
-    instagram: !!config.facebook.pageAccessToken,
+    facebook: !!config.blotato.apiKey,
+    instagram: !!config.blotato.apiKey,
     telegram: !!(config.telegram.botToken && config.telegram.chatId),
   };
 }
@@ -141,8 +141,8 @@ async function publishFacebook(req, res) {
     const runtimeConfig = buildRuntimeConfig(owner);
 
     let result;
-    if (!runtimeConfig.facebook.pageAccessToken) {
-      result = { success: false, skipped: true, error: 'FACEBOOK_PAGE_ACCESS_TOKEN not configured' };
+    if (!runtimeConfig.blotato?.apiKey) {
+      result = { success: false, skipped: true, error: 'BLOTATO_API_KEY not configured' };
     } else if (post.isVideo) {
       result = await facebookService.postVideoToPage(post.originalFilePath, post.caption, runtimeConfig);
     } else {
@@ -192,37 +192,12 @@ async function publishInstagram(req, res) {
       return res.status(400).json({ success: false, message: 'Video posting to Instagram not supported in this flow' });
     }
 
-    if (!runtimeConfig.facebook.pageAccessToken) {
-      return res.status(400).json({ success: false, message: 'FACEBOOK_PAGE_ACCESS_TOKEN not configured' });
+    if (!runtimeConfig.blotato?.apiKey) {
+      return res.status(400).json({ success: false, message: 'BLOTATO_API_KEY not configured' });
     }
 
-    let facebookResult = post.publishStatus?.facebook || null;
-    let facebookPostId = facebookResult?.success ? facebookResult.postId : null;
-
-    if (!facebookPostId) {
-      const imagePath = post.generatedFilePath || post.originalFilePath;
-      const postedToFb = await facebookService.postToPage(imagePath, post.caption, runtimeConfig);
-      facebookResult = toChannelPayload(postedToFb);
-      post.publishStatus.facebook = facebookResult;
-
-      if (!postedToFb.success) {
-        const summary = computeStatusFromChannels(post.publishStatus.facebook, post.publishStatus.instagram);
-        post.publishStatus.status = summary.status;
-        post.publishStatus.message = summary.message;
-        await post.save();
-
-        return res.status(400).json({
-          success: false,
-          message: postedToFb.error || 'Facebook post failed — cannot continue Instagram',
-          facebook: postedToFb,
-        });
-      }
-
-      facebookPostId = postedToFb.postId;
-    }
-
-    const imageUrl = `https://graph.facebook.com/${facebookPostId}/picture`;
-    const instagramRawResult = await instagramService.postToInstagram(imageUrl, post.caption, runtimeConfig);
+    const imagePath = post.generatedFilePath || post.originalFilePath;
+    const instagramRawResult = await instagramService.postToInstagram(imagePath, post.caption, runtimeConfig);
     const instagramResult = toChannelPayload(instagramRawResult);
 
     post.publishStatus.instagram = instagramResult;

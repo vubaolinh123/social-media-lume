@@ -2,8 +2,6 @@ const mongoose = require('mongoose');
 const config = require('../config');
 const User = require('../models/user.model');
 const geminiService = require('../services/gemini.service');
-const facebookService = require('../services/facebook.service');
-const instagramService = require('../services/instagram.service');
 const telegramService = require('../services/telegram.service');
 const { buildRuntimeConfig, buildMaskedSettings } = require('../services/runtime-config.service');
 const { encryptText } = require('../utils/crypto');
@@ -106,21 +104,9 @@ async function testConnections(req, res) {
       checks.gemini = false;
     }
 
-    // Facebook
-    try {
-      const pageId = await facebookService.fetchPageId(runtimeConfig);
-      checks.facebook = !!pageId;
-    } catch (error) {
-      checks.facebook = false;
-    }
-
-    // Instagram
-    try {
-      const igId = await instagramService.fetchInstagramAccountId(runtimeConfig);
-      checks.instagram = !!igId;
-    } catch (error) {
-      checks.instagram = false;
-    }
+    // Facebook & Instagram — both gate on Blotato API key
+    checks.facebook = !!runtimeConfig.blotato?.apiKey;
+    checks.instagram = !!runtimeConfig.blotato?.apiKey;
 
     // Telegram
     try {

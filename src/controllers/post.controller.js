@@ -24,8 +24,8 @@ const { isImage, isVideo } = require('../utils/helpers');
 function getServiceStatus() {
   return {
     gemini: !!config.gemini.apiKey,
-    facebook: !!config.facebook.pageAccessToken,
-    instagram: !!config.facebook.pageAccessToken, // Instagram uses same token
+    facebook: !!config.blotato.apiKey,
+    instagram: !!config.blotato.apiKey,
     telegram: !!(config.telegram.botToken && config.telegram.chatId),
   };
 }
@@ -33,8 +33,8 @@ function getServiceStatus() {
 function getServiceStatusFromRuntime(runtimeConfig) {
   return {
     gemini: !!runtimeConfig?.gemini?.apiKey,
-    facebook: !!runtimeConfig?.facebook?.pageAccessToken,
-    instagram: !!runtimeConfig?.facebook?.pageAccessToken,
+    facebook: !!runtimeConfig?.blotato?.apiKey,
+    instagram: !!runtimeConfig?.blotato?.apiKey,
     telegram: !!(runtimeConfig?.telegram?.botToken && runtimeConfig?.telegram?.chatId),
   };
 }
@@ -102,7 +102,7 @@ function checkStatus(req, res) {
   if (!req.user?.id || !mongoose.isValidObjectId(req.user.id)) {
     const status = getServiceStatus();
     if (!status.gemini) warnings.push('GEMINI_API_KEY chưa được cấu hình — không thể tạo caption AI');
-    if (!status.facebook) warnings.push('FACEBOOK_PAGE_ACCESS_TOKEN chưa được cấu hình — không thể đăng lên Facebook & Instagram');
+    if (!status.facebook) warnings.push('BLOTATO_API_KEY chưa được cấu hình — không thể đăng lên Facebook & Instagram');
     if (!status.telegram) warnings.push('TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_ID chưa được cấu hình — không có chức năng duyệt bài qua Telegram');
     return res.json({ success: true, services: status, warnings });
   }
@@ -116,7 +116,7 @@ function checkStatus(req, res) {
         warnings.push('GEMINI_API_KEY chưa được cấu hình — không thể tạo caption AI');
       }
       if (!status.facebook) {
-        warnings.push('FACEBOOK_PAGE_ACCESS_TOKEN chưa được cấu hình — không thể đăng lên Facebook & Instagram');
+        warnings.push('BLOTATO_API_KEY chưa được cấu hình — không thể đăng lên Facebook & Instagram');
       }
       if (!status.telegram) {
         warnings.push('TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_ID chưa được cấu hình — không có chức năng duyệt bài qua Telegram');
@@ -280,14 +280,14 @@ async function approvePost(req, res) {
       }
     } else {
       warnings.push('Facebook chưa được cấu hình — bỏ qua đăng Facebook');
-      results.facebook = { success: false, skipped: true, error: 'FACEBOOK_PAGE_ACCESS_TOKEN not configured' };
+      results.facebook = { success: false, skipped: true, error: 'BLOTATO_API_KEY not configured' };
     }
 
-    // Step 5: Publish to Instagram (if FB succeeded and configured)
-    if (services.instagram && results.facebook?.success && !post.isVideo) {
+    // Step 5: Publish to Instagram (if configured)
+    if (services.instagram && !post.isVideo) {
       try {
         results.instagram = await instagramService.postToInstagram(
-          `https://graph.facebook.com/${results.facebook.postId}/picture`,
+          imagePath,
           post.caption,
           runtimeConfig
         );
@@ -297,7 +297,7 @@ async function approvePost(req, res) {
       }
     } else if (!services.instagram) {
       warnings.push('Instagram chưa được cấu hình — bỏ qua đăng Instagram');
-      results.instagram = { success: false, skipped: true, error: 'Token not configured' };
+      results.instagram = { success: false, skipped: true, error: 'BLOTATO_API_KEY not configured' };
     } else if (post.isVideo) {
       results.instagram = { success: false, skipped: true, error: 'Video posting to Instagram not supported in this flow' };
     } else if (!results.facebook?.success && services.facebook) {

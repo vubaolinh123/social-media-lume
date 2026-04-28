@@ -3,7 +3,6 @@ const assert = require('node:assert/strict');
 const request = require('supertest');
 const { MongoMemoryServer } = require('mongodb-memory-server');
 
-const facebookService = require('../../src/services/facebook.service');
 const instagramService = require('../../src/services/instagram.service');
 const { encryptText } = require('../../src/utils/crypto');
 
@@ -31,7 +30,9 @@ test.before(async () => {
   process.env.JWT_SECRET = 'test-secret-gallery-publish-ig';
   process.env.JWT_EXPIRES_IN = '1h';
   process.env.JWT_COOKIE_NAME = 'lumi_token';
-  process.env.FACEBOOK_PAGE_ACCESS_TOKEN = 'fake-token-for-tests';
+  process.env.BLOTATO_API_KEY = 'blt_test-fake-key';
+  process.env.BLOTATO_FB_ACCOUNT_ID = '28121';
+  process.env.BLOTATO_IG_ACCOUNT_ID = '44007';
 
   clearRequireCache('../../src/config');
   clearRequireCache('../../src/config/db');
@@ -91,18 +92,15 @@ test.after(async () => {
   if (mongod) await mongod.stop();
 });
 
-test('POST /api/posts/:id/publish/instagram auto-posts to FB first when needed', async (t) => {
-  const originalFb = facebookService.postToPage;
+test('POST /api/posts/:id/publish/instagram posts directly via Blotato', async (t) => {
   const originalIg = instagramService.postToInstagram;
 
-  facebookService.postToPage = async () => ({ success: true, postId: 'fb-post-for-ig-001' });
-  instagramService.postToInstagram = async (imageUrl) => {
-    assert.match(imageUrl, /graph\.facebook\.com\/fb-post-for-ig-001\/picture/);
+  instagramService.postToInstagram = async (imageUrlOrPath) => {
+    assert.ok(imageUrlOrPath, 'imageUrlOrPath should be provided');
     return { success: true, postId: 'ig-post-001' };
   };
 
   t.after(() => {
-    facebookService.postToPage = originalFb;
     instagramService.postToInstagram = originalIg;
   });
 
@@ -112,6 +110,5 @@ test('POST /api/posts/:id/publish/instagram auto-posts to FB first when needed',
     .expect(200);
 
   assert.equal(response.body.success, true);
-  assert.equal(response.body.publishStatus.facebook.success, true);
   assert.equal(response.body.publishStatus.instagram.success, true);
 });

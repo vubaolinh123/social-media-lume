@@ -1,147 +1,161 @@
-/**
- * Facebook Service
- * Handles posting to Facebook Page via Graph API
- * Page ID is auto-fetched from the Page Access Token (no need to configure manually)
- */
-
 const axios = require('axios');
 const fs = require('fs');
-const FormData = require('form-data');
+const path = require('path');
 const config = require('../config');
 
-const GRAPH_API_URL = 'https://graph.facebook.com/v21.0';
-
-// Cache Page ID by token (avoids repeated API calls)
-const pageIdCache = new Map();
-
-function getPageAccessToken(runtimeConfig) {
-  return runtimeConfig?.facebook?.pageAccessToken || config.facebook.pageAccessToken;
+function getBlotatoConfig(runtimeConfig) {
+  return runtimeConfig?.blotato || config.blotato;
 }
 
-/**
- * Fetch Facebook Page ID from the Page Access Token
- * Uses GET /me endpoint which returns the page info associated with the token
- * @returns {string|null} - Page ID or null on failure
- */
-async function fetchPageId(runtimeConfig = null) {
-  const accessToken = getPageAccessToken(runtimeConfig);
-  if (pageIdCache.has(accessToken)) return pageIdCache.get(accessToken);
+function getMimeType(filePath) {
+  const ext = path.extname(filePath).toLowerCase();
+  const map = {
+    '.jpg': 'image/jpeg',
+    '.jpeg': 'image/jpeg',
+    '.png': 'image/png',
+    '.gif': 'image/gif',
+    '.webp': 'image/webp',
+    '.mp4': 'video/mp4',
+    '.mov': 'video/quicktime',
+    '.avi': 'video/x-msvideo',
+  };
+  return map[ext] || 'application/octet-stream';
+}
 
-  if (!accessToken) {
-    console.warn('⚠️  FACEBOOK_PAGE_ACCESS_TOKEN not configured');
-    return null;
-  }
+async function uploadMedia(filePath, blotatoCfg) {
+  const filename = path.basename(filePath);
 
-  try {
-    const response = await axios.get(`${GRAPH_API_URL}/me`, {
-      params: {
-        access_token: accessToken,
-        fields: 'id,name',
+  // Step 1: request presigned upload URL
+  const presignRes = await axios.post(
+    `${blotatoCfg.baseUrl}/media/uploads`,
+    { filename },
+    {
+      headers: {
+        'blotato-api-key': blotatoCfg.apiKey,
+        'Content-Type': 'application/json',
       },
-    });
+    }
+  );
 
-    pageIdCache.set(accessToken, response.data.id);
-    console.log(`✅ Facebook Page detected: "${response.data.name}" (ID: ${response.data.id})`);
-    return response.data.id;
-  } catch (error) {
-    const errMsg = error.response?.data?.error?.message || error.message;
-    console.error('❌ Failed to fetch Facebook Page ID from token:', errMsg);
-    return null;
-  }
+  const { presignedUrl, publicUrl } = presignRes.data;
+
+  // Step 2: PUT binary file to presigned URL
+  const fileBuffer = fs.readFileSync(filePath);
+  await axios.put(presignedUrl, fileBuffer, {
+    headers: { 'Content-Type': getMimeType(filePath) },
+    maxBodyLength: Infinity,
+    maxContentLength: Infinity,
+  });
+
+  return publicUrl;
 }
 
 /**
- * Post image + caption to Facebook Page
- * @param {string} imagePath - Path to the processed image
+ * Post image + caption to Facebook Page via Blotato
+ * @param {string} imagePath - Local path to the image file
  * @param {string} caption - Post caption text
+ * @param {object} runtimeConfig - Optional runtime config override
  * @returns {object} - { success, postId, error }
  */
 async function postToPage(imagePath, caption, runtimeConfig = null) {
-  const accessToken = getPageAccessToken(runtimeConfig);
+  const blotatoCfg = getBlotatoConfig(runtimeConfig);
 
-  if (!accessToken) {
-    console.warn('⚠️  Facebook credentials not configured');
-    return { success: false, error: 'FACEBOOK_PAGE_ACCESS_TOKEN not configured' };
-  }
-
-  const pageId = await fetchPageId(runtimeConfig);
-  if (!pageId) {
-    return { success: false, error: 'Could not determine Facebook Page ID from token. Please check your FACEBOOK_PAGE_ACCESS_TOKEN.' };
+  if (!blotatoCfg.apiKey) {
+    console.warn('⚠️  BLOTATO_API_KEY not configured');
+    return { success: false, error: 'BLOTATO_API_KEY not configured' };
   }
 
   try {
-    const form = new FormData();
-    form.append('source', fs.createReadStream(imagePath));
-    form.append('message', caption);
-    form.append('access_token', accessToken);
+    const mediaUrl = await uploadMedia(imagePath, blotatoCfg);
 
     const response = await axios.post(
-      `${GRAPH_API_URL}/${pageId}/photos`,
-      form,
+      `${blotatoCfg.baseUrl}/posts`,
       {
-        headers: form.getHeaders(),
-        maxContentLength: Infinity,
-        maxBodyLength: Infinity,
+        post: {
+          accountId: blotatoCfg.fbAccountId,
+          content: {
+            text: caption,
+            mediaUrls: [mediaUrl],
+            platform: 'facebook',
+          },
+          target: {
+            targetType: 'facebook',
+            pageId: blotatoCfg.fbPageId,
+          },
+        },
+      },
+      {
+        headers: {
+          'blotato-api-key': blotatoCfg.apiKey,
+          'Content-Type': 'application/json',
+        },
       }
     );
 
-    console.log('✅ Facebook post created:', response.data.id);
-    return {
-      success: true,
-      postId: response.data.id,
-    };
+    const postSubmissionId = response.data.postSubmissionId || response.data.id;
+    console.log('Facebook post submitted:', postSubmissionId);
+    return { success: true, postId: postSubmissionId, mediaUrl };
   } catch (error) {
-    const errMsg = error.response?.data?.error?.message || error.message;
-    console.error('❌ Facebook posting error:', errMsg);
-    return {
-      success: false,
-      error: errMsg,
-    };
-  }
-}
-
-/**
- * Post video to Facebook Page
- * @param {string} videoPath - Path to video file
- * @param {string} caption - Post caption
- * @returns {object} - { success, postId, error }
- */
-async function postVideoToPage(videoPath, caption, runtimeConfig = null) {
-  const accessToken = getPageAccessToken(runtimeConfig);
-
-  if (!accessToken) {
-    return { success: false, error: 'FACEBOOK_PAGE_ACCESS_TOKEN not configured' };
-  }
-
-  const pageId = await fetchPageId(runtimeConfig);
-  if (!pageId) {
-    return { success: false, error: 'Could not determine Facebook Page ID from token. Please check your FACEBOOK_PAGE_ACCESS_TOKEN.' };
-  }
-
-  try {
-    const form = new FormData();
-    form.append('source', fs.createReadStream(videoPath));
-    form.append('description', caption);
-    form.append('access_token', accessToken);
-
-    const response = await axios.post(
-      `${GRAPH_API_URL}/${pageId}/videos`,
-      form,
-      {
-        headers: form.getHeaders(),
-        maxContentLength: Infinity,
-        maxBodyLength: Infinity,
-        timeout: 120000,
-      }
-    );
-
-    console.log('✅ Facebook video posted:', response.data.id);
-    return { success: true, postId: response.data.id };
-  } catch (error) {
-    const errMsg = error.response?.data?.error?.message || error.message;
-    console.error('❌ Facebook video posting error:', errMsg);
+    const status = error.response?.status;
+    const body = error.response?.data;
+    console.error('Facebook posting error:', { status, body, message: error.message });
+    const errMsg = body?.message || body?.error || error.message;
     return { success: false, error: errMsg };
   }
 }
 
-module.exports = { postToPage, postVideoToPage, fetchPageId };
+/**
+ * Post video to Facebook Page via Blotato
+ * @param {string} videoPath - Local path to the video file
+ * @param {string} caption - Post caption
+ * @param {object} runtimeConfig - Optional runtime config override
+ * @returns {object} - { success, postId, error }
+ */
+async function postVideoToPage(videoPath, caption, runtimeConfig = null) {
+  const blotatoCfg = getBlotatoConfig(runtimeConfig);
+
+  if (!blotatoCfg.apiKey) {
+    return { success: false, error: 'BLOTATO_API_KEY not configured' };
+  }
+
+  try {
+    const mediaUrl = await uploadMedia(videoPath, blotatoCfg);
+
+    const response = await axios.post(
+      `${blotatoCfg.baseUrl}/posts`,
+      {
+        post: {
+          accountId: blotatoCfg.fbAccountId,
+          content: {
+            text: caption,
+            mediaUrls: [mediaUrl],
+            platform: 'facebook',
+          },
+          target: {
+            targetType: 'facebook',
+            pageId: blotatoCfg.fbPageId,
+          },
+        },
+      },
+      {
+        headers: {
+          'blotato-api-key': blotatoCfg.apiKey,
+          'Content-Type': 'application/json',
+        },
+        timeout: 120000,
+      }
+    );
+
+    const postSubmissionId = response.data.postSubmissionId || response.data.id;
+    console.log('Facebook video submitted:', postSubmissionId);
+    return { success: true, postId: postSubmissionId, mediaUrl };
+  } catch (error) {
+    const status = error.response?.status;
+    const body = error.response?.data;
+    console.error('Facebook video posting error:', { status, body, message: error.message });
+    const errMsg = body?.message || body?.error || error.message;
+    return { success: false, error: errMsg };
+  }
+}
+
+module.exports = { postToPage, postVideoToPage };

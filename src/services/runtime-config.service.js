@@ -31,6 +31,13 @@ function buildRuntimeConfig(userDoc) {
       chatId: pick(settings.social?.telegramChatId, config.telegram.chatId),
       autoPublishDelay: config.autoPublishDelay,
     },
+    blotato: {
+      apiKey: config.blotato.apiKey,
+      fbAccountId: config.blotato.fbAccountId,
+      fbPageId: config.blotato.fbPageId,
+      igAccountId: config.blotato.igAccountId,
+      baseUrl: config.blotato.baseUrl,
+    },
     brand,
   };
 }
@@ -48,6 +55,9 @@ function buildMaskedSettings(userDoc) {
       instagramAccessToken: maskSecret(decryptText(settings.social?.instagramAccessToken || '')),
       telegramBotToken: maskSecret(decryptText(settings.social?.telegramBotToken || '')),
       telegramChatId: settings.social?.telegramChatId || '',
+    },
+    blotato: {
+      apiKey: maskSecret(config.blotato.apiKey),
     },
     brand: {
       ...(settings.brand || {}),

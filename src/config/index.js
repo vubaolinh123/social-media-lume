@@ -30,6 +30,14 @@ const config = {
     // Instagram uses the same token as Facebook (Page Access Token)
   },
 
+  blotato: {
+    apiKey: process.env.BLOTATO_API_KEY || '',
+    fbAccountId: process.env.BLOTATO_FB_ACCOUNT_ID || '',
+    fbPageId: process.env.BLOTATO_FB_PAGE_ID || '',
+    igAccountId: process.env.BLOTATO_IG_ACCOUNT_ID || '',
+    baseUrl: 'https://backend.blotato.com/v2',
+  },
+
   telegram: {
     botToken: '',
     chatId: '',
