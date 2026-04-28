@@ -48,7 +48,8 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.textContent = 'Đang đăng...';
 
         try {
-          const data = await callApi(`/api/posts/${postId}/publish/facebook`, 'POST');
+          const caption = btn.closest('article').querySelector('.caption-edit')?.value || '';
+          const data = await callApi(`/api/posts/${postId}/publish/facebook`, 'POST', { caption });
           showToast(data.message || 'Đã xử lý Facebook', data.success ? 'success' : 'warning');
         } catch (error) {
           showToast(error.message, 'error');
@@ -71,7 +72,8 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.textContent = 'Đang đăng...';
 
         try {
-          const data = await callApi(`/api/posts/${postId}/publish/instagram`, 'POST');
+          const caption = btn.closest('article').querySelector('.caption-edit')?.value || '';
+          const data = await callApi(`/api/posts/${postId}/publish/instagram`, 'POST', { caption });
           showToast(data.message || 'Đã xử lý Instagram', data.success ? 'success' : 'warning');
         } catch (error) {
           showToast(error.message, 'error');

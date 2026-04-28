@@ -51,13 +51,8 @@ function buildMaskedSettings(userDoc) {
       textModel: settings.ai?.textModel || '',
     },
     social: {
-      facebookPageAccessToken: maskSecret(decryptText(settings.social?.facebookPageAccessToken || '')),
-      instagramAccessToken: maskSecret(decryptText(settings.social?.instagramAccessToken || '')),
       telegramBotToken: maskSecret(decryptText(settings.social?.telegramBotToken || '')),
       telegramChatId: settings.social?.telegramChatId || '',
-    },
-    blotato: {
-      apiKey: maskSecret(config.blotato.apiKey),
     },
     brand: {
       ...(settings.brand || {}),

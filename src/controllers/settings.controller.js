@@ -37,8 +37,6 @@ async function updateSettings(req, res) {
     const prev = existing?.settings || {};
 
     const nextAiKey = (req.body.geminiApiKey || '').trim();
-    const nextFb = (req.body.facebookPageAccessToken || '').trim();
-    const nextIg = (req.body.instagramAccessToken || '').trim();
     const nextTg = (req.body.telegramBotToken || '').trim();
 
     const payload = {
@@ -49,8 +47,6 @@ async function updateSettings(req, res) {
           textModel: prev.ai?.textModel || '',
         },
         social: {
-          facebookPageAccessToken: nextFb ? encryptText(nextFb) : (prev.social?.facebookPageAccessToken || ''),
-          instagramAccessToken: nextIg ? encryptText(nextIg) : (prev.social?.instagramAccessToken || ''),
           telegramBotToken: nextTg ? encryptText(nextTg) : (prev.social?.telegramBotToken || ''),
           telegramChatId: req.body.telegramChatId || '',
         },

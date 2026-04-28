@@ -29,17 +29,13 @@
         <p class="text-xs text-dark-400 mt-3">Image/Text model được cấu hình ở nút răng cưa trên header trang tạo ảnh.</p>
       </section>
 
+      <div class="bg-dark-900 border border-dark-700 rounded-xl px-4 py-3 text-xs text-dark-400">
+        <span class="font-semibold text-dark-300">Blotato API:</span> cấu hình qua file <code class="text-dark-300">.env</code> (<code>BLOTATO_API_KEY</code>, <code>BLOTATO_FB_ACCOUNT_ID</code>, <code>BLOTATO_FB_PAGE_ID</code>, <code>BLOTATO_IG_ACCOUNT_ID</code>)
+      </div>
+
       <section class="bg-dark-800 border border-dark-700 rounded-2xl p-5">
-        <h2 class="text-lg font-semibold text-white mb-4">Social Tokens</h2>
+        <h2 class="text-lg font-semibold text-white mb-4">Telegram Notifications</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label class="text-sm text-dark-300">Facebook Page Access Token</label>
-            <input type="password" autocomplete="new-password" placeholder="<%= masked?.social?.facebookPageAccessToken || '' %>" name="facebookPageAccessToken" value="" class="w-full mt-1 bg-dark-900 border border-dark-600 rounded-lg px-3 py-2 text-white" />
-          </div>
-          <div>
-            <label class="text-sm text-dark-300">Instagram Access Token</label>
-            <input type="password" autocomplete="new-password" placeholder="<%= masked?.social?.instagramAccessToken || '' %>" name="instagramAccessToken" value="" class="w-full mt-1 bg-dark-900 border border-dark-600 rounded-lg px-3 py-2 text-white" />
-          </div>
           <div>
             <label class="text-sm text-dark-300">Telegram Bot Token</label>
             <input type="password" autocomplete="new-password" placeholder="<%= masked?.social?.telegramBotToken || '' %>" name="telegramBotToken" value="" class="w-full mt-1 bg-dark-900 border border-dark-600 rounded-lg px-3 py-2 text-white" />

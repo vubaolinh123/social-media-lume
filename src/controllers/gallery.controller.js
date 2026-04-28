@@ -140,6 +140,12 @@ async function publishFacebook(req, res) {
     const owner = await User.findById(ownerId);
     const runtimeConfig = buildRuntimeConfig(owner);
 
+    const { caption: editedCaption } = req.body || {};
+    if (editedCaption && editedCaption.trim() && editedCaption.trim() !== post.caption) {
+      post.caption = editedCaption.trim();
+      await post.save();
+    }
+
     let result;
     if (!runtimeConfig.blotato?.apiKey) {
       result = { success: false, skipped: true, error: 'BLOTATO_API_KEY not configured' };
@@ -187,6 +193,12 @@ async function publishInstagram(req, res) {
 
     const owner = await User.findById(ownerId);
     const runtimeConfig = buildRuntimeConfig(owner);
+
+    const { caption: editedCaption } = req.body || {};
+    if (editedCaption && editedCaption.trim() && editedCaption.trim() !== post.caption) {
+      post.caption = editedCaption.trim();
+      await post.save();
+    }
 
     if (post.isVideo) {
       return res.status(400).json({ success: false, message: 'Video posting to Instagram not supported in this flow' });
