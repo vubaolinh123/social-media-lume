@@ -45,11 +45,11 @@ const postAssetSchema = new mongoose.Schema({
   },
   requestedImageModel: { type: String, default: null },
   requestedTextModel: { type: String, default: null },
-  includeFooterContact: { type: Boolean, default: true },
+  includeFooterContact: { type: Boolean, default: false },
 
   isVideo: { type: Boolean, default: false },
-  logoPosition: { type: String, default: 'bottom-left' },
-  qrPosition: { type: String, default: 'bottom-right' },
+  logoPosition: { type: String, default: 'none' },
+  qrPosition: { type: String, default: 'none' },
 
   publishStatus: {
     status: {

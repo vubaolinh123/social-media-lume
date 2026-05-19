@@ -4,6 +4,7 @@
  */
 const config = require('../config');
 const { buildProductReferenceInvariants } = require('./image/prompt.shared');
+const { buildCaptionPolicy } = require('./caption-policy');
 
 /**
  * Build prompt cho Gemini để tạo ảnh template Promotion
@@ -44,34 +45,20 @@ IMPORTANT:
  */
 function buildCaptionPrompt({ title = '', content = '', serviceName = '', brand: brandOverride = null } = {}) {
   const brand = { ...config.brand, ...(brandOverride || {}) };
-  return `You are a content marketing expert for the lash extension brand "${brand.name}".
-Write an engaging caption for a PROMOTION / SPECIAL OFFER post on Facebook and Instagram.
+  return `${buildCaptionPolicy({
+    brand,
+    postLabel: 'PROMOTION / SPECIAL OFFER',
+    tone: 'luxury, urgent, clear, offer-driven',
+    hookStyle: 'lead with the offer or limited-time value in a polished way',
+    bodyFocus: 'state the service offer, value, timing, and why it is worth booking now',
+    ctaStyle: 'clear but elegant CTA such as book now, DM to claim, or reserve your slot',
+  })}
 
 POST DETAILS:
 - Title: ${title || 'Special Offer'}
 ${content ? `- Offer details: ${content}` : ''}
 ${serviceName ? `- Service: ${serviceName}` : ''}
-
-REQUIREMENTS:
-1. Tone: Luxurious, urgency-driven, FOMO
-2. Strong hook (e.g., "THIS WEEK ONLY — An incredible deal for all lash lovers 🔥")
-3. Highlight the offer value and deadline
-4. Clear CTA: book now, DM us, call the hotline
-5. 150-250 words, in English, with appropriate emojis
-6. NOTE: Do NOT mention the logo or QR code on the image
-
-HASHTAGS: #${brand.name.replace(/\s+/g, '')} #khuyenmai #noimi #promotion #eyelashes #${brand.name.replace(/\s+/g, '').toLowerCase()}
-
-CONTACT INFO (add at end of caption):
-- ${brand.name} | ${brand.phone}
-- ${brand.address}
-
-JSON FORMAT:
-{
-  "caption": "full caption + hashtags",
-  "shortCaption": "max 50 words for story",
-  "hashtags": ["hashtag1", "hashtag2"]
-}`;
+`;
 }
 
 module.exports = { buildImagePrompt, buildCaptionPrompt };

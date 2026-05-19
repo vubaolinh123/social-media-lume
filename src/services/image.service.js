@@ -31,7 +31,7 @@ async function processImage(imagePath, postType, options = {}) {
     title: options.title || '',
     content: options.serviceName || '',
     serviceName: options.serviceName || '',
-    includeFooterContact: options.includeFooterContact !== false,
+    includeFooterContact: options.includeFooterContact === true,
     brand: options.brand || undefined,
   }, {
     imageModel: options.imageModel,
@@ -73,8 +73,8 @@ async function processImage(imagePath, postType, options = {}) {
 
   // Step 3: Overlay logo and QR code using sharp
   imageBuffer = await compositeLogoAndQR(imageBuffer, {
-    logoPosition: options.logoPosition || 'bottom-left',
-    qrPosition: options.qrPosition || 'bottom-right',
+    logoPosition: options.logoPosition || 'none',
+    qrPosition: options.qrPosition || 'none',
     phone: options.brand?.phone || options.brand?.hotline || config.brand.phone,
     address: options.brand?.address || config.brand.address,
   });

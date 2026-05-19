@@ -196,6 +196,41 @@ function parseJsonFromText(text = '') {
   }
 }
 
+function normalizeCaptionLine(value = '') {
+  return String(value)
+    .replace(/\s*\n+\s*/g, ' ')
+    .replace(/\s{2,}/g, ' ')
+    .trim();
+}
+
+function normalizeHashtags(hashtags = [], caption = '') {
+  const banned = new Set(['#aidesign', '#creativeconcept', '#noimi']);
+  const inlineTags = Array.from(new Set((caption.match(/#[a-z0-9_]+/gi) || []).map((tag) => tag.toLowerCase())));
+  const listTags = Array.isArray(hashtags)
+    ? hashtags.map((tag) => String(tag).trim()).filter(Boolean).map((tag) => tag.startsWith('#') ? tag : `#${tag}`)
+    : [];
+
+  return Array.from(new Set([...listTags, ...inlineTags]))
+    .map((tag) => tag.toLowerCase())
+    .filter((tag) => !banned.has(tag));
+}
+
+function normalizeCaptionPayload(payload = {}, rawText = '') {
+  const caption = normalizeCaptionLine(payload.caption || rawText || '');
+  const shortCaption = normalizeCaptionLine(payload.shortCaption || '');
+  const hashtags = normalizeHashtags(payload.hashtags || [], caption);
+  const captionWithoutInlineHashtags = caption.replace(/\s*#[a-z0-9_]+/gi, '').trim();
+  const finalCaption = hashtags.length > 0
+    ? `${captionWithoutInlineHashtags} ${hashtags.join(' ')}`.trim()
+    : captionWithoutInlineHashtags;
+
+  return {
+    caption: finalCaption,
+    shortCaption,
+    hashtags,
+  };
+}
+
 async function analyzeProductImage(imagePath, runtime = null) {
   if (!genAI && !init(runtime)) {
     return { success: false, analysis: null, error: 'Gemini API key not configured' };
@@ -491,18 +526,14 @@ async function generateCaption(postType, params, options = {}) {
     if (jsonMatch) {
       try {
         const parsed = JSON.parse(jsonMatch[0]);
-        return {
-          caption: parsed.caption || text,
-          shortCaption: parsed.shortCaption || '',
-          hashtags: parsed.hashtags || [],
-        };
+        return normalizeCaptionPayload(parsed, text);
       } catch (parseError) {
         console.warn('Failed to parse Gemini JSON response, using raw text');
-        return { caption: text, shortCaption: '', hashtags: [] };
+        return normalizeCaptionPayload({}, text);
       }
     }
 
-    return { caption: text, shortCaption: '', hashtags: [] };
+    return normalizeCaptionPayload({}, text);
   } catch (error) {
     console.error('Gemini caption error:', error.message);
     return getFallbackCaption(postType, params);
@@ -518,24 +549,23 @@ function getFallbackCaption(postType, params) {
   const content = params.content || '';
 
   const templates = {
-    BA: `✨ BEFORE & AFTER ✨\n\n${title}\n\n${content || 'The results speak for themselves! From sparse lashes to captivating eyes 🖤'}\n\n📍 ${brand.name}\n📞 Hotline: ${brand.hotline}\n🌐 ${brand.website}\n\n#${brand.name.replace(/\s+/g, '')} #noimi #beforeafter #lamdepmat`,
-    Review: `💕 CLIENT REVIEW 💕\n\n${title}\n\n${content || 'Thank you for trusting us! Her reaction when she looked in the mirror was truly unforgettable 😍'}\n\n📍 ${brand.name}\n📞 Hotline: ${brand.hotline}\n🌐 ${brand.website}\n\n#${brand.name.replace(/\s+/g, '')} #reviewkhachhang #noimi`,
-    BTS: `🎬 BEHIND THE SCENES 🎬\n\n${title}\n\n${content || 'Every single lash placed with precision and care ✨'}\n\n📍 ${brand.name}\n📞 Hotline: ${brand.hotline}\n🌐 ${brand.website}\n\n#${brand.name.replace(/\s+/g, '')} #behindthescenes #noimi`,
-    Promo: `🔥 SPECIAL OFFER 🔥\n\n${title}\n\n${content || 'Limited-time deal — book your appointment now!'}\n\n📍 ${brand.name}\n📞 Hotline: ${brand.hotline}\n🌐 ${brand.website}\n\n#${brand.name.replace(/\s+/g, '')} #khuyenmai #noimi`,
+    BA: `${title || 'A soft, polished transformation'} ${content || 'before to after with a fuller finish'} ✨ Book your next lash set with us. #beforeandafter #lashextensions #lashtransformation #lashartist #lashset`,
+    Review: `${title || 'Loved this lash result'} ${content || 'clean, soft, and made to suit her eyes perfectly'} ✨ DM us to book. #lashextensions #lashartist #customlashes #lashset`,
+    BTS: `${title || 'A look behind the set'} ${content || 'precision placement, clean isolation, and a finish made to last'} ✨ Book your appointment with us. #behindthescenes #lashartist #lashtech #lashextensions #lashprocess`,
+    Promo: `${title || 'Limited-time lash offer'} ${content || 'reserve your appointment now and enjoy this special service deal'} ✨ DM us to claim your slot. #lashpromo #lashextensions #lashdeal #lashartist #booknow`,
     Spotlight: `⭐ LASH SPOTLIGHT ⭐\n\n${title}\n\n${content || 'Every lash placed with meticulous attention to detail 🖤'}\n\n📍 ${brand.name}\n📞 Hotline: ${brand.hotline}\n🌐 ${brand.website}\n\n#${brand.name.replace(/\s+/g, '')} #lashspotlight #noimi`,
     Tutorial: `📚 LASH TUTORIAL 📚\n\n${title}\n\n${content || 'Salon-grade lash care tips to keep your lashes looking gorgeous every day ✨'}\n\n📍 ${brand.name}\n📞 Hotline: ${brand.hotline}\n🌐 ${brand.website}\n\n#${brand.name.replace(/\s+/g, '')} #lashtutorial #lashcare #noimi`,
     NewArrival: `🆕 NOW AVAILABLE 🆕\n\n${title}\n\n${content || 'Our newest service is ready — DM us to secure your slot first!'}\n\n📍 ${brand.name}\n📞 Hotline: ${brand.hotline}\n🌐 ${brand.website}\n\n#${brand.name.replace(/\s+/g, '')} #newarrival #noimi #lashservice`,
     Seasonal: `🎄 SEASONAL LASH SPECIAL 🎄\n\n${title}\n\n${content || 'A seasonal concept to keep your look elegantly on-trend all season long ✨'}\n\n📍 ${brand.name}\n📞 Hotline: ${brand.hotline}\n🌐 ${brand.website}\n\n#${brand.name.replace(/\s+/g, '')} #seasonalbeauty #holidaylook #noimi`,
     Tips: `💡 PRO LASH TIPS 💡\n\n${title}\n\n${content || 'Simple habits done right to keep your lashes lasting longer and looking lighter every day!'}\n\n📍 ${brand.name}\n📞 Hotline: ${brand.hotline}\n🌐 ${brand.website}\n\n#${brand.name.replace(/\s+/g, '')} #lashcaretips #didyouknow #noimi`,
     Portfolio: `🖼️ PORTFOLIO HIGHLIGHTS 🖼️\n\n${title}\n\n${content || 'Every lash set is its own unique design, tailored to each eye shape ✨'}\n\n📍 ${brand.name}\n📞 Hotline: ${brand.hotline}\n🌐 ${brand.website}\n\n#${brand.name.replace(/\s+/g, '')} #lashportfolio #ourwork #noimi`,
-    AIRandom: `🎲 AI CREATIVE CONCEPT 🎲\n\n${title}\n\n${content || 'AI-selected concept based on your uploaded product photo — a one-of-a-kind design ✨'}\n\n📍 ${brand.name}\n📞 Hotline: ${brand.hotline}\n🌐 ${brand.website}\n\n#${brand.name.replace(/\s+/g, '')} #aidesign #creativeconcept #noimi`,
+    AIRandom: `${title || 'A fresh beauty concept'} ${content || 'crafted to match the look, mood, and service focus of this post'} ✨ DM us to book your appointment. #lashextensions #lashartist #beautypost #customlashes`,
   };
 
-  return {
+  return normalizeCaptionPayload({
     caption: templates[postType] || templates.BA,
-    shortCaption: title || `${brand.name} - Professional Lash Extensions`,
-    hashtags: [`#${brand.name.replace(/\s+/g, '')}`, '#noimi'],
-  };
+    shortCaption: title || `${brand.name} lash post`,
+  });
 }
 
 // Initialize on require

@@ -4,6 +4,7 @@
  */
 const config = require('../config');
 const { buildProductReferenceInvariants } = require('./image/prompt.shared');
+const { buildCaptionPolicy } = require('./caption-policy');
 
 /**
  * Build prompt cho Gemini để tạo ảnh template Before/After
@@ -46,34 +47,20 @@ IMPORTANT:
  */
 function buildCaptionPrompt({ title = '', content = '', serviceName = '', brand: brandOverride = null } = {}) {
   const brand = { ...config.brand, ...(brandOverride || {}) };
-  return `You are a content marketing expert for the lash extension brand "${brand.name}".
-Write an engaging caption for a BEFORE/AFTER post on Facebook and Instagram.
+  return `${buildCaptionPolicy({
+    brand,
+    postLabel: 'BEFORE/AFTER',
+    tone: 'luxury, confident, transformation-focused',
+    hookStyle: 'lead with the visible result or transformation payoff',
+    bodyFocus: 'highlight the transformation, the service result, and the polished final look',
+    ctaStyle: 'soft booking CTA such as DM us, book your set, or secure your appointment',
+  })}
 
 POST DETAILS:
 - Title: ${title}
 ${content ? `- Additional content: ${content}` : ''}
 ${serviceName ? `- Service: ${serviceName}` : ''}
-
-REQUIREMENTS:
-1. Tone: Luxurious, confident, WOW effect
-2. Opening hook must spark curiosity (e.g., "She came in with sparse lashes — two hours later, the results speak for themselves 🖤")
-3. Highlight the before vs. after transformation
-4. Include a clear call to action to book an appointment (CTA)
-5. 150-250 words, in English, with appropriate emojis
-6. IMPORTANT NOTE: Do NOT mention the logo or QR code on the image in the caption — the system adds these to the image automatically
-
-HASHTAGS: #${brand.name.replace(/\s+/g, '')} #noimi #beforeafter #eyelashes #${brand.name.replace(/\s+/g, '').toLowerCase()} #lammi #lashextensions
-
-CONTACT INFO (add at end of caption):
-- ${brand.name} | ${brand.phone}
-- ${brand.address}
-
-Reply in JSON format:
-{
-  "caption": "Full caption including hashtags",
-  "shortCaption": "Short caption for story (max 50 words)",
-  "hashtags": ["hashtag1", "hashtag2", ...]
-}`;
+`;
 }
 
 module.exports = { buildImagePrompt, buildCaptionPrompt };

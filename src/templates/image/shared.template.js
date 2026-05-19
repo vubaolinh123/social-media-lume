@@ -35,7 +35,7 @@ async function loadAssetBuffer(assetPath, size = LOGO_QR_SIZE) {
 
 /**
  * Calculate position for an asset (logo/QR) based on named position
- * @param {string} position - 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
+ * @param {string} position - 'none' | 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
  * @param {number} canvasWidth
  * @param {number} canvasHeight
  * @param {number} assetSize
@@ -59,8 +59,8 @@ function getAssetPosition(position, canvasWidth, canvasHeight, assetSize = LOGO_
  */
 async function compositeLogoAndQR(imageBuffer, options = {}) {
   const {
-    logoPosition = 'bottom-left',
-    qrPosition = 'bottom-right',
+    logoPosition = 'none',
+    qrPosition = 'none',
   } = options;
 
   // Get image dimensions
@@ -70,14 +70,14 @@ async function compositeLogoAndQR(imageBuffer, options = {}) {
   const composites = [];
 
   // Load and position logo
-  const logoBuffer = await loadAssetBuffer(config.paths.logo, LOGO_QR_SIZE);
+  const logoBuffer = logoPosition !== 'none' ? await loadAssetBuffer(config.paths.logo, LOGO_QR_SIZE) : null;
   if (logoBuffer) {
     const pos = getAssetPosition(logoPosition, width, height, LOGO_QR_SIZE);
     composites.push({ input: logoBuffer, left: pos.left, top: pos.top });
   }
 
   // Load and position QR code
-  const qrBuffer = await loadAssetBuffer(config.paths.qr, LOGO_QR_SIZE);
+  const qrBuffer = qrPosition !== 'none' ? await loadAssetBuffer(config.paths.qr, LOGO_QR_SIZE) : null;
   if (qrBuffer) {
     const pos = getAssetPosition(qrPosition, width, height, LOGO_QR_SIZE);
     composites.push({ input: qrBuffer, left: pos.left, top: pos.top });

@@ -4,6 +4,7 @@
  */
 const config = require('../config');
 const { buildProductReferenceInvariants } = require('./image/prompt.shared');
+const { buildCaptionPolicy } = require('./caption-policy');
 
 /**
  * Build prompt cho Gemini để tạo ảnh template BTS
@@ -44,35 +45,20 @@ IMPORTANT:
  */
 function buildCaptionPrompt({ title = '', content = '', serviceName = '', brand: brandOverride = null } = {}) {
   const brand = { ...config.brand, ...(brandOverride || {}) };
-  return `You are a content marketing expert for the lash extension brand "${brand.name}".
-Write an engaging caption for a BEHIND THE SCENES (BTS) post on Facebook and Instagram.
+  return `${buildCaptionPolicy({
+    brand,
+    postLabel: 'BEHIND THE SCENES (BTS)',
+    tone: 'professional, polished, exclusive, process-led',
+    hookStyle: 'open with a crisp behind-the-scenes angle that feels premium and authentic',
+    bodyFocus: 'highlight precision, clean technique, artistry, and what happens during the appointment',
+    ctaStyle: 'invite readers to book and experience the service firsthand',
+  })}
 
 POST DETAILS:
 - Title: ${title}
 ${content ? `- Description: ${content}` : ''}
 ${serviceName ? `- Technique: ${serviceName}` : ''}
-
-REQUIREMENTS:
-1. Tone: Professional, artistic, behind-the-scenes feel
-2. Curiosity-building hook (e.g., "Behind every perfect set of lashes is a meticulous process 🖤")
-3. Highlight the process, clean tools, and artist expertise
-4. Create a sense of exclusivity and premium quality
-5. CTA: invite readers to experience it firsthand
-6. 150-250 words, in English, with appropriate emojis
-7. NOTE: Do NOT mention the logo or QR code on the image
-
-HASHTAGS: #${brand.name.replace(/\s+/g, '')} #behindthescenes #bts #noimi #lashartist #process #${brand.name.replace(/\s+/g, '').toLowerCase()}
-
-CONTACT INFO (add at end of caption):
-- ${brand.name} | ${brand.phone}
-- ${brand.address}
-
-Reply in JSON format:
-{
-  "caption": "Full caption including hashtags",
-  "shortCaption": "Short caption for story (max 50 words)",
-  "hashtags": ["hashtag1", "hashtag2", ...]
-}`;
+`;
 }
 
 module.exports = { buildImagePrompt, buildCaptionPrompt };

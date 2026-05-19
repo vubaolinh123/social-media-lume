@@ -177,10 +177,10 @@ async function createPost(req, res) {
       generationStatus,
       requestedImageModel: imageModel || null,
       requestedTextModel: textModel || null,
-      includeFooterContact: includeFooterContact !== 'off',
+      includeFooterContact: includeFooterContact === 'on',
       isVideo: fileIsVideo,
-      logoPosition: logoPosition || 'bottom-left',
-      qrPosition: qrPosition || 'bottom-right',
+      logoPosition: logoPosition || 'none',
+      qrPosition: qrPosition || 'none',
       publishStatus: {
         status: 'pending',
       },
