@@ -51,6 +51,9 @@ LOGO HARMONY RULES (LUMÉ LASHES):
 LAYOUT + FOOTER COHERENCE RULES:
 - Keep product as hero element and maintain clear readability.
 - Keep visual safe areas for logo and QR placement.
+- Never invent a new logo, wordmark, watermark, brand stamp, monogram, or emblem inside the AI-generated image.
+- Never recreate the uploaded image as a smaller duplicate inside a poster, card, mockup, collage, screen, or branded frame unless the template explicitly requires that layout.
+- If the source image already contains a real visible brand/logo on the photographed subject, preserve only that real source detail; do not add new branding.
 
 ${footerRules}
 

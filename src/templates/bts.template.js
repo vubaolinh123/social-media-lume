@@ -23,17 +23,20 @@ DESIGN REQUIREMENTS:
 - Canvas size: 1080x1080px (Instagram square - perfect for BTS content)
 - Feature the behind-the-scenes photo as a full-bleed or near-full image
 - Add a cinematic overlay: subtle film grain, vignette, or muted color grade
-- Add a branded badge/stamp: "${brand.name}" in a circular or rectangular badge
-- Include "BEHIND THE SCENES" or "BTS" text in a cinematic/editorial style font
+- If text is used, keep it minimal and editorial; "BEHIND THE SCENES" or "BTS" is enough
 ${title ? `- Title overlay: "${title}"` : ''}
 ${content ? `- Description: "${content}"` : ''}
  ${serviceName ? `- Technique: "${serviceName}"` : ''}
-- Add a short brand tagline in English (rewrite/adapt if brand tagline is not English)
+- Do not add any brand badge, stamp, emblem, wordmark, signature, monogram, or invented logo
+- Do not place the uploaded image inside another mockup, frame, card, poster, device screen, or collage tile
+- Preserve the uploaded BTS photo as the hero visual rather than recreating it as a new branded composition
 - Style: Professional, cinematic, "exclusive peek" aesthetic
 - Color palette: derived from source image; cinematic treatment can be light, neutral, or dark
 
 IMPORTANT:
 - DO NOT add any logo or QR code (these will be added separately)
+- DO NOT generate or imitate any logo, salon mark, watermark, brand symbol, or text treatment that behaves like a logo
+- DO NOT invent extra product packaging, fake labels, or duplicate versions of the uploaded image
 - Keep bottom-left and bottom-right corners clear for logo/QR placement
 - The BTS photo should dominate the composition
 - Create a sense of exclusivity and professionalism

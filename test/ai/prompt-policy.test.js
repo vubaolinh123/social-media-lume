@@ -45,6 +45,15 @@ test('all image prompts enforce English-only text in generated images', () => {
   });
 });
 
+test('bts prompt explicitly forbids invented branding and duplicate mockups', () => {
+  const prompt = bts.buildImagePrompt({ title: 'Studio process' });
+
+  assert.doesNotMatch(prompt, /add a branded badge\/stamp/i);
+  assert.match(prompt, /do not add any logo or qr code/i);
+  assert.match(prompt, /do not generate or imitate any logo/i);
+  assert.match(prompt, /do not place the uploaded image inside another mockup, frame, card, poster, device screen, or collage tile/i);
+});
+
 test('ai random template includes full creative-freedom instructions', () => {
   const prompt = aiRandom.buildImagePrompt({ title: 'Creative direction test' });
 
