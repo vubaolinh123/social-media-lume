@@ -15,6 +15,13 @@ test('config exposes mongo and auth settings', () => {
   assert.ok(config.auth.jwtCookieName);
 });
 
+test('config uses Gemini 2.5 defaults for text and image', () => {
+  const config = require('../../src/config');
+
+  assert.strictEqual(config.gemini.textModel, 'gemini-2.5-flash');
+  assert.strictEqual(config.gemini.imageModel, 'gemini-3-pro-image-preview');
+});
+
 test('server can be imported without auto-listen side effects', () => {
   try {
     delete require.cache[require.resolve('../../server')];

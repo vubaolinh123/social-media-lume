@@ -16,8 +16,8 @@ const config = {
 
   gemini: {
     apiKey: '',
-    textModel: 'gemini-2.0-flash',
-    imageModel: 'gemini-2.0-flash-exp-image-generation',
+    textModel: 'gemini-2.5-flash',
+    imageModel: 'gemini-3-pro-image-preview',
   },
 
   facebook: {
