@@ -103,17 +103,26 @@
       <!-- Hidden: auto mode flag -->
       <input type="hidden" name="autoMode" id="hiddenAutoMode" value="0">
       
-      <!-- Post Type (manual mode only) -->
+      <!-- Post Type (always visible in both modes) -->
       <div class="space-y-3" id="sectionPostType">
         <label class="block text-sm font-semibold text-dark-200">
-          Loại bài viết <span class="text-red-400">*</span>
+          Chọn Template <span class="text-red-400">*</span>
         </label>
-        <div class="grid grid-cols-3 gap-2 sm:gap-3">
+        <div class="grid grid-cols-2 gap-2 sm:gap-3">
           <label class="post-type-card group cursor-pointer">
             <input type="radio" name="postType" value="BA" class="sr-only peer" id="postTypeBA">
             <div class="bg-dark-800 border-2 border-dark-600 rounded-xl p-3 sm:p-4 text-center transition-all duration-200 peer-checked:border-brand-400 peer-checked:bg-brand-400/10 hover:border-dark-400 group-active:scale-95">
               <div class="text-xl sm:text-2xl mb-1 sm:mb-2">✨</div>
               <div class="text-xs sm:text-sm font-semibold text-white">Before/After</div>
+              <div class="text-xs text-dark-500 mt-0.5">2 ảnh so sánh</div>
+            </div>
+          </label>
+          <label class="post-type-card group cursor-pointer">
+            <input type="radio" name="postType" value="ShowcaseStrip" class="sr-only peer" id="postTypeShowcaseStrip">
+            <div class="bg-dark-800 border-2 border-dark-600 rounded-xl p-3 sm:p-4 text-center transition-all duration-200 peer-checked:border-brand-400 peer-checked:bg-brand-400/10 hover:border-dark-400 group-active:scale-95">
+              <div class="text-xl sm:text-2xl mb-1 sm:mb-2">🏞️</div>
+              <div class="text-xs sm:text-sm font-semibold text-white">Showcase Strip</div>
+              <div class="text-xs text-dark-500 mt-0.5">Hero + 2 dải ngang</div>
             </div>
           </label>
           <label class="post-type-card group cursor-pointer">
@@ -121,6 +130,7 @@
             <div class="bg-dark-800 border-2 border-dark-600 rounded-xl p-3 sm:p-4 text-center transition-all duration-200 peer-checked:border-brand-400 peer-checked:bg-brand-400/10 hover:border-dark-400 group-active:scale-95">
               <div class="text-xl sm:text-2xl mb-1 sm:mb-2">🎬</div>
               <div class="text-xs sm:text-sm font-semibold text-white">BTS</div>
+              <div class="text-xs text-dark-500 mt-0.5">Hậu trường</div>
             </div>
           </label>
           <label class="post-type-card group cursor-pointer">
@@ -128,12 +138,21 @@
             <div class="bg-dark-800 border-2 border-dark-600 rounded-xl p-3 sm:p-4 text-center transition-all duration-200 peer-checked:border-brand-400 peer-checked:bg-brand-400/10 hover:border-dark-400 group-active:scale-95">
               <div class="text-xl sm:text-2xl mb-1 sm:mb-2">🏷️</div>
               <div class="text-xs sm:text-sm font-semibold text-white">Promo</div>
+              <div class="text-xs text-dark-500 mt-0.5">Khuyến mãi</div>
             </div>
           </label>
         </div>
+
+        <!-- Showcase Strip hint (shown when ShowcaseStrip is selected in auto mode) -->
+        <div id="showcaseStripHint" class="hidden">
+          <div class="bg-amber-500/10 border border-amber-500/20 rounded-lg px-3 py-2 flex items-center gap-2">
+            <span class="text-sm">ℹ️</span>
+            <p class="text-xs text-amber-300">AI sẽ tạo layout: ảnh nền full-width + tên dịch vụ chữ to + 2 dải ngang trưng bày chi tiết — giống ảnh mẫu</p>
+          </div>
+        </div>
       </div>
 
-      <!-- Post Title (manual mode only) -->
+      <!-- Post Title (hidden in auto mode) -->
       <div class="space-y-2" id="sectionTitle">
         <label for="title" class="block text-sm font-semibold text-dark-200">
           Tên bài viết <span class="text-red-400">*</span>
@@ -145,7 +164,7 @@
         >
       </div>
 
-      <!-- Post Content (manual mode only) -->
+      <!-- Post Content (hidden in auto mode) -->
       <div class="space-y-2" id="sectionContent">
         <label for="content" class="block text-sm font-semibold text-dark-200">
           Nội dung bài <span class="text-dark-400 font-normal">(tuỳ chọn)</span>
@@ -155,17 +174,6 @@
           placeholder="Mô tả thêm về bài viết, AI sẽ dùng thông tin này để tạo caption..."
           class="w-full bg-dark-800 border border-dark-600 rounded-xl px-4 py-3 text-white placeholder-dark-400 focus:outline-none focus:border-brand-400 focus:ring-1 focus:ring-brand-400 transition-colors text-sm resize-none"
         ></textarea>
-      </div>
-
-      <!-- Auto mode info banner (shown when auto mode is active) -->
-      <div id="autoModeBanner" class="hidden">
-        <div class="bg-brand-400/10 border border-brand-400/30 rounded-xl p-4 flex items-start gap-3">
-          <span class="text-2xl flex-shrink-0">⚡</span>
-          <div>
-            <p class="text-sm font-semibold text-brand-300">AI tự động phân tích ảnh</p>
-            <p class="text-xs text-dark-400 mt-1">Gemini sẽ nhận diện loại dịch vụ, tạo layout và viết caption phù hợp — không cần nhập thêm gì.</p>
-          </div>
-        </div>
       </div>
 
       <!-- File Upload -->

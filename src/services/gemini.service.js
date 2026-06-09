@@ -23,6 +23,7 @@ const seasonalTemplate = require('../templates/seasonal.template');
 const tipsTemplate = require('../templates/tips.template');
 const portfolioTemplate = require('../templates/portfolio.template');
 const aiRandomTemplate = require('../templates/aiRandom.template');
+const showcaseStripTemplate = require('../templates/showcaseStrip.template');
 
 let genAI = null;
 let textModel = null;
@@ -152,6 +153,7 @@ function getTemplate(postType) {
     case 'Tips': return tipsTemplate;
     case 'Portfolio': return portfolioTemplate;
     case 'AIRandom': return aiRandomTemplate;
+    case 'ShowcaseStrip': return showcaseStripTemplate;
     default: throw new Error(`Unknown post type: ${postType}`);
   }
 }
@@ -560,6 +562,7 @@ function getFallbackCaption(postType, params) {
     Tips: `💡 PRO LASH TIPS 💡\n\n${title}\n\n${content || 'Simple habits done right to keep your lashes lasting longer and looking lighter every day!'}\n\n📍 ${brand.name}\n📞 Hotline: ${brand.hotline}\n🌐 ${brand.website}\n\n#${brand.name.replace(/\s+/g, '')} #lashcaretips #didyouknow #noimi`,
     Portfolio: `🖼️ PORTFOLIO HIGHLIGHTS 🖼️\n\n${title}\n\n${content || 'Every lash set is its own unique design, tailored to each eye shape ✨'}\n\n📍 ${brand.name}\n📞 Hotline: ${brand.hotline}\n🌐 ${brand.website}\n\n#${brand.name.replace(/\s+/g, '')} #lashportfolio #ourwork #noimi`,
     AIRandom: `${title || 'A fresh beauty concept'} ${content || 'crafted to match the look, mood, and service focus of this post'} ✨ DM us to book your appointment. #lashextensions #lashartist #beautypost #customlashes`,
+    ShowcaseStrip: `${title || 'Beauty showcase'} ${content || 'every detail, every lash, every transformation — all for you'} ✨ DM us to book your session. #beautyshowcase #lashextensions #lashartist #beforeandafter`,
   };
 
   return normalizeCaptionPayload({
