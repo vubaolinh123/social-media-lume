@@ -51,6 +51,30 @@
       <p class="text-dark-300 text-sm">AI sẽ tự động xử lý ảnh, tạo caption và đăng bài</p>
     </div>
 
+    <!-- Mode Toggle -->
+    <div class="mb-6">
+      <div class="grid grid-cols-2 gap-3" id="modeToggle">
+        <button type="button" id="modeManual"
+          class="mode-btn active-mode flex flex-col items-center gap-2 bg-brand-400/10 border-2 border-brand-400 rounded-xl p-4 text-center transition-all duration-200 cursor-pointer group"
+          onclick="setMode('manual')">
+          <span class="text-xl">✏️</span>
+          <div>
+            <div class="text-sm font-semibold text-white">Nhập thông tin</div>
+            <div class="text-xs text-dark-400 mt-0.5">Chọn loại bài &amp; điền nội dung</div>
+          </div>
+        </button>
+        <button type="button" id="modeAuto"
+          class="mode-btn flex flex-col items-center gap-2 bg-dark-800 border-2 border-dark-600 rounded-xl p-4 text-center transition-all duration-200 cursor-pointer hover:border-dark-400 group"
+          onclick="setMode('auto')">
+          <span class="text-xl">⚡</span>
+          <div>
+            <div class="text-sm font-semibold text-white">Chỉ upload ảnh</div>
+            <div class="text-xs text-dark-400 mt-0.5">AI tự phân tích &amp; thiết kế</div>
+          </div>
+        </button>
+      </div>
+    </div>
+
     <% if (error) { %>
     <div class="bg-red-500/10 border border-red-500/30 rounded-xl p-4 mb-6">
       <div class="flex items-center space-x-2">
@@ -75,29 +99,32 @@
 
     <!-- Form -->
     <form action="/create" method="POST" enctype="multipart/form-data" id="postForm" class="space-y-6">
+
+      <!-- Hidden: auto mode flag -->
+      <input type="hidden" name="autoMode" id="hiddenAutoMode" value="0">
       
-      <!-- Post Type -->
-      <div class="space-y-3">
+      <!-- Post Type (manual mode only) -->
+      <div class="space-y-3" id="sectionPostType">
         <label class="block text-sm font-semibold text-dark-200">
           Loại bài viết <span class="text-red-400">*</span>
         </label>
         <div class="grid grid-cols-3 gap-2 sm:gap-3">
           <label class="post-type-card group cursor-pointer">
-            <input type="radio" name="postType" value="BA" class="sr-only peer" required>
+            <input type="radio" name="postType" value="BA" class="sr-only peer" id="postTypeBA">
             <div class="bg-dark-800 border-2 border-dark-600 rounded-xl p-3 sm:p-4 text-center transition-all duration-200 peer-checked:border-brand-400 peer-checked:bg-brand-400/10 hover:border-dark-400 group-active:scale-95">
               <div class="text-xl sm:text-2xl mb-1 sm:mb-2">✨</div>
               <div class="text-xs sm:text-sm font-semibold text-white">Before/After</div>
             </div>
           </label>
           <label class="post-type-card group cursor-pointer">
-            <input type="radio" name="postType" value="BTS" class="sr-only peer">
+            <input type="radio" name="postType" value="BTS" class="sr-only peer" id="postTypeBTS">
             <div class="bg-dark-800 border-2 border-dark-600 rounded-xl p-3 sm:p-4 text-center transition-all duration-200 peer-checked:border-brand-400 peer-checked:bg-brand-400/10 hover:border-dark-400 group-active:scale-95">
               <div class="text-xl sm:text-2xl mb-1 sm:mb-2">🎬</div>
               <div class="text-xs sm:text-sm font-semibold text-white">BTS</div>
             </div>
           </label>
           <label class="post-type-card group cursor-pointer">
-            <input type="radio" name="postType" value="Promo" class="sr-only peer">
+            <input type="radio" name="postType" value="Promo" class="sr-only peer" id="postTypePromo">
             <div class="bg-dark-800 border-2 border-dark-600 rounded-xl p-3 sm:p-4 text-center transition-all duration-200 peer-checked:border-brand-400 peer-checked:bg-brand-400/10 hover:border-dark-400 group-active:scale-95">
               <div class="text-xl sm:text-2xl mb-1 sm:mb-2">🏷️</div>
               <div class="text-xs sm:text-sm font-semibold text-white">Promo</div>
@@ -106,20 +133,20 @@
         </div>
       </div>
 
-      <!-- Post Title -->
-      <div class="space-y-2">
+      <!-- Post Title (manual mode only) -->
+      <div class="space-y-2" id="sectionTitle">
         <label for="title" class="block text-sm font-semibold text-dark-200">
           Tên bài viết <span class="text-red-400">*</span>
         </label>
         <input 
-          type="text" id="title" name="title" required
+          type="text" id="title" name="title"
           placeholder="VD: Nối mi Classic - Khách chị Hương"
           class="w-full bg-dark-800 border border-dark-600 rounded-xl px-4 py-3 text-white placeholder-dark-400 focus:outline-none focus:border-brand-400 focus:ring-1 focus:ring-brand-400 transition-colors text-sm"
         >
       </div>
 
-      <!-- Post Content (Optional) -->
-      <div class="space-y-2">
+      <!-- Post Content (manual mode only) -->
+      <div class="space-y-2" id="sectionContent">
         <label for="content" class="block text-sm font-semibold text-dark-200">
           Nội dung bài <span class="text-dark-400 font-normal">(tuỳ chọn)</span>
         </label>
@@ -128,6 +155,17 @@
           placeholder="Mô tả thêm về bài viết, AI sẽ dùng thông tin này để tạo caption..."
           class="w-full bg-dark-800 border border-dark-600 rounded-xl px-4 py-3 text-white placeholder-dark-400 focus:outline-none focus:border-brand-400 focus:ring-1 focus:ring-brand-400 transition-colors text-sm resize-none"
         ></textarea>
+      </div>
+
+      <!-- Auto mode info banner (shown when auto mode is active) -->
+      <div id="autoModeBanner" class="hidden">
+        <div class="bg-brand-400/10 border border-brand-400/30 rounded-xl p-4 flex items-start gap-3">
+          <span class="text-2xl flex-shrink-0">⚡</span>
+          <div>
+            <p class="text-sm font-semibold text-brand-300">AI tự động phân tích ảnh</p>
+            <p class="text-xs text-dark-400 mt-1">Gemini sẽ nhận diện loại dịch vụ, tạo layout và viết caption phù hợp — không cần nhập thêm gì.</p>
+          </div>
+        </div>
       </div>
 
       <!-- File Upload -->
@@ -234,6 +272,16 @@
       <div class="text-center mt-3" id="activeModelInfo">
         <p class="text-xs text-dark-500">Model: <span id="activeModelLabel" class="text-dark-400">Default</span></p>
       </div>
+
+      <style>
+        .mode-btn.active-mode {
+          background-color: rgba(var(--color-brand-400), 0.1);
+          border-color: rgb(var(--color-brand-400));
+        }
+        .mode-btn.active-mode div div:first-child {
+          color: #fff;
+        }
+      </style>
     </form>
 
     <!-- Workflow Steps -->

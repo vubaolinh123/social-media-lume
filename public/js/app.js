@@ -94,6 +94,54 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // ========== Mode Toggle (Manual vs Auto) ==========
+  let currentMode = 'manual';
+
+  const sectionPostType = document.getElementById('sectionPostType');
+  const sectionTitle = document.getElementById('sectionTitle');
+  const sectionContent = document.getElementById('sectionContent');
+  const autoModeBanner = document.getElementById('autoModeBanner');
+  const hiddenAutoMode = document.getElementById('hiddenAutoMode');
+  const modeManualBtn = document.getElementById('modeManual');
+  const modeAutoBtn = document.getElementById('modeAuto');
+
+  window.setMode = function(mode) {
+    currentMode = mode;
+    const isAuto = mode === 'auto';
+
+    // Toggle active style on buttons
+    if (modeManualBtn) {
+      modeManualBtn.classList.toggle('active-mode', !isAuto);
+      modeManualBtn.style.backgroundColor = isAuto ? '' : 'rgba(var(--tw-brand-400-rgb, 163 113 250) / 0.1)';
+      modeManualBtn.classList.toggle('border-brand-400', !isAuto);
+      modeManualBtn.classList.toggle('border-dark-600', isAuto);
+      modeManualBtn.classList.toggle('bg-brand-400\/10', !isAuto);
+      modeManualBtn.classList.toggle('bg-dark-800', isAuto);
+    }
+    if (modeAutoBtn) {
+      modeAutoBtn.classList.toggle('active-mode', isAuto);
+      modeAutoBtn.classList.toggle('border-brand-400', isAuto);
+      modeAutoBtn.classList.toggle('border-dark-600', !isAuto);
+      modeAutoBtn.classList.toggle('bg-brand-400\/10', isAuto);
+      modeAutoBtn.classList.toggle('bg-dark-800', !isAuto);
+    }
+
+    // Show/hide sections
+    if (sectionPostType) sectionPostType.style.display = isAuto ? 'none' : '';
+    if (sectionTitle) sectionTitle.style.display = isAuto ? 'none' : '';
+    if (sectionContent) sectionContent.style.display = isAuto ? 'none' : '';
+    if (autoModeBanner) autoModeBanner.classList.toggle('hidden', !isAuto);
+
+    // Update hidden flag
+    if (hiddenAutoMode) hiddenAutoMode.value = isAuto ? '1' : '0';
+
+    // Update submit text
+    const submitTextEl = document.getElementById('submitText');
+    if (submitTextEl) {
+      submitTextEl.textContent = isAuto ? 'Upload & AI tự thiết kế' : 'Tạo bài viết với AI';
+    }
+  };
+
   // ========== Form Submission (index page) ==========
   const postForm = document.getElementById('postForm');
   const submitBtn = document.getElementById('submitBtn');
@@ -101,7 +149,23 @@ document.addEventListener('DOMContentLoaded', () => {
   const submitSpinner = document.getElementById('submitSpinner');
 
   if (postForm) {
-    postForm.addEventListener('submit', () => {
+    postForm.addEventListener('submit', (e) => {
+      // Validate: in manual mode, postType must be selected
+      if (currentMode === 'manual') {
+        const selectedType = postForm.querySelector('input[name="postType"]:checked');
+        if (!selectedType) {
+          e.preventDefault();
+          if (window.showToast) showToast('Vui lòng chọn loại bài viết', 'warning', 4000);
+          return;
+        }
+        const titleEl = document.getElementById('title');
+        if (titleEl && !titleEl.value.trim()) {
+          e.preventDefault();
+          titleEl.focus();
+          if (window.showToast) showToast('Vui lòng nhập tên bài viết', 'warning', 4000);
+          return;
+        }
+      }
       if (submitBtn) submitBtn.disabled = true;
       if (submitText) submitText.textContent = 'Đang xử lý...';
       if (submitSpinner) submitSpinner.classList.remove('hidden');

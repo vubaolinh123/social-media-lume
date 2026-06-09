@@ -166,6 +166,20 @@ input[type="file"] {
   font-size: 0;
 }
 
+/* Mode Toggle Buttons */
+.mode-btn {
+  transition: all 0.2s ease;
+}
+
+.mode-btn.active-mode {
+  border-color: #c49a6c !important;
+  background-color: rgba(196, 154, 108, 0.12) !important;
+}
+
+.mode-btn:not(.active-mode):hover {
+  border-color: rgba(196, 154, 108, 0.4);
+}
+
 /* Settings Panel */
 #settingsModal.open {
   display: flex !important;

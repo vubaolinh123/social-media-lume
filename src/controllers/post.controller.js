@@ -129,13 +129,18 @@ function checkStatus(req, res) {
 
 async function createPost(req, res) {
   try {
-    const { title, content, postType, logoPosition, qrPosition, imageModel, textModel, includeFooterContact } = req.body;
+    const { title, content, postType: rawPostType, logoPosition, qrPosition, imageModel, textModel, includeFooterContact, autoMode } = req.body;
     const file = req.file;
+    const isAutoMode = autoMode === '1';
 
     if (!file) {
       return res.render('index', { brand: config.brand, error: 'Vui lòng tải lên ảnh hoặc video', success: null, user: req.user || null, toastError: null });
     }
-    if (!postType) {
+
+    // Auto mode: skip postType requirement, default to AIRandom
+    const postType = isAutoMode ? 'AIRandom' : rawPostType;
+
+    if (!isAutoMode && !postType) {
       return res.render('index', { brand: config.brand, error: 'Vui lòng chọn loại bài viết', success: null, user: req.user || null, toastError: null });
     }
 
