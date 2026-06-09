@@ -1,88 +1,94 @@
 /**
  * Showcase Strip - Horizontal Panel Layout Template
- * Tạo ảnh bố cục: Hero photo background + tên dịch vụ overlay + 2 dải ngang before/after + studio name
- * Layout reference: Eyelash Lift style (Yu Studio)
+ * Layout: Real photo background + service name text + 2 horizontal crop strips + studio name
  */
 const config = require('../config');
 const { buildProductReferenceInvariants } = require('./image/prompt.shared');
 const { buildCaptionPolicy } = require('./caption-policy');
 
-/**
- * Build prompt for Gemini to create Showcase Strip layout image
- * @param {object} options - { title, content, serviceName, brand, includeFooterContact }
- * @returns {string} prompt
- */
 function buildImagePrompt({ title = '', content = '', serviceName = '', brand: brandOverride = null, includeFooterContact = true } = {}) {
   const brand = { ...config.brand, ...(brandOverride || {}) };
   const sharedInvariant = buildProductReferenceInvariants({ brand, postType: 'ShowcaseStrip', includeFooterContact });
 
-  return `You are a professional social media graphic designer for a premium beauty brand called "${brand.name}".
+  const serviceLabel = (serviceName || title || 'BEAUTY TREATMENT').toUpperCase();
 
-TASK: Create a stunning social media post image using the exact SHOWCASE STRIP layout described below.
+  return `You are a photo compositor creating a social media post. Your job is to take the uploaded photo and composite it into a specific layout. Do NOT generate new illustrations. Do NOT recreate the photo as artwork. Use the actual uploaded photo pixels.
 
 ${sharedInvariant}
 
-═══════════════════════════════════════════
-LAYOUT BLUEPRINT (Follow exactly):
-═══════════════════════════════════════════
+OUTPUT CANVAS: 1080 x 1350 pixels
 
-CANVAS: 1080×1350px (Instagram portrait 4:5)
+YOU MUST FOLLOW THESE EXACT STEPS:
 
-ZONE 1 — HERO BACKGROUND (top ~55% of canvas):
-- Use the uploaded photo as a FULL-BLEED background covering the entire canvas
-- The photo bleeds edge-to-edge with NO border, frame, or padding
-- Apply very subtle vignette darkening on the left edge only (so text is readable)
-- The photo remains the main visual hero of the composition
+==============================================
+STEP 1 — BACKGROUND LAYER
+==============================================
+- Place the uploaded photo as the full-canvas background, stretched or cropped to fill all 1080x1350px
+- The photo must remain a REAL PHOTOGRAPH — do not paint it, illustrate it, or stylize it
+- Apply a very soft darkening vignette along the LEFT edge only (so text is legible)
+- The photo background stays 100% photographic and natural
 
-ZONE 2 — SERVICE NAME TEXT OVERLAY (centered vertically in the hero zone, left-of-center):
-- Render the service/treatment name in WIDE-SPACED capital letters
-- Font: elegant thin serif or light sans-serif (think Cormorant Garamond, Playfair Display Light, or similar luxury editorial)
-- Letter-spacing: very wide (tracking ~0.3–0.5em between each letter)
-- Font size: large, commanding — approximately 60–72px equivalent
-- Color: pure white (#FFFFFF) or very light ivory (#F5F0EB) — high contrast against photo
-- Position: vertically centered in the top hero zone, slightly left of center
-- DO NOT add any box, underline, shadow box, or background behind this text — floating clean text only
-- Add VERY subtle text-shadow (1–2px) purely for legibility
-- Service name to render: "${serviceName || title || 'BEAUTY TREATMENT'}"
+==============================================
+STEP 2 — SERVICE NAME TEXT (overlay on photo)
+==============================================
+- Position: vertically centered around y=400-550px, starting from x=80px (left-aligned)
+- Text content: "${serviceLabel}"
+- Typography: thin/light weight elegant sans-serif or serif font
+- Letter spacing: EXTREMELY wide (each letter spaced far apart, like: E  Y  E  L  A  S  H     L  I  F  T)
+- Font size: large (approx 60-70px)
+- Color: pure white #FFFFFF
+- Rendering: plain floating text directly on the photo, NO box behind it, NO underline, NO badge
+- Text shadow: only 1px blur shadow for readability, no glow effect
 
-ZONE 3 — DOUBLE HORIZONTAL STRIP PANELS (bottom ~50% of canvas, overlapping the hero):
-- Create TWO horizontal rectangular strip panels stacked vertically
-- Each strip is: full canvas width × approximately 200–230px tall
-- Between the two strips: a thin gap of ~4–6px (can be slightly transparent or the background photo peeking through)
-- Strip background: warm peachy-nude semi-transparent tone (#E8C9B4 at ~85% opacity) OR a clean light warm ivory — must feel soft, feminine, premium
-- Each strip contains: a close-up crop of the uploaded photo centered in that strip (eye detail, lash detail, or key beauty detail)
-- The crops inside each strip should be cropped from different vertical positions of the uploaded photo to show variety
-- Strip 1 (top strip): crop from the upper portion of the uploaded image
-- Strip 2 (bottom strip): crop from the lower portion of the uploaded image
-- The strips should feel like editorial beauty detail shots
-- Add VERY subtle inner shadow on top edge of Strip 1 for depth
+==============================================
+STEP 3 — TWO HORIZONTAL STRIP PANELS (KEY design feature)
+==============================================
 
-ZONE 4 — STUDIO / BRAND NAME (bottom center, below the strips):
-- Add the brand/studio name in clean, spaced small caps typography
-- Text: "${brand.name}" 
-- Style: thin elegant lettering, 24–30px, warm nude or white color
-- Position: horizontally centered, approximately 30–40px from the bottom edge of canvas
-- DO NOT put this inside a box — floating text only
+STRIP PANEL SPECIFICATIONS:
+- Both strips span the FULL width of the canvas: x=0 to x=1080
+- Strip 1 (top): positioned at y=680 to y=890 (height = 210px)
+- Gap between strips: 5px of transparent space showing the photo behind
+- Strip 2 (bottom): positioned at y=895 to y=1105 (height = 210px)
 
-ADDITIONAL DESIGN RULES:
-- Overall color mood: soft warm editorial, feminine luxury (NOT dark/moody, NOT neon, NOT clinical white)
-- The two strip panels are the KEY distinguishing design element — make them prominent
-- Ensure the strip panels extend edge-to-edge (full canvas width, no side margins on strips)
-- No decorative borders, no heavy drop shadows, no gradient blobs
-- The composition should feel like a high-end Korean beauty salon Instagram post
-- Subtle use of negative space above and around the text adds premium feel
+STRIP VISUAL STYLE:
+- Each strip has a solid rectangular background: warm peachy-nude color #EABFA0 at 80% opacity
+- Inside each strip, display a CROPPED PORTION of the uploaded photo, filling the strip height
+  - Strip 1: crop the upper-middle area of the uploaded photo
+  - Strip 2: crop the lower-middle area of the uploaded photo
+- The photo crops inside the strips should be centered vertically within each strip
+- The strips must have CLEAN HARD EDGES — no feathering, no gradient fade on the sides
+- On the right edge of each strip: a tiny 4px vertical notch at x=1076 for a subtle layered effect
 
-IMPORTANT:
-- DO NOT add any logo or QR code (these will be added separately by the system)
-- Keep bottom-left and bottom-right corners with minimal clutter for logo/QR overlays
-- Keep the floating text elements (service name + studio name) clean and readable
-- DO NOT render any number like "1/6" or slide indicators
-- The final image must look like the uploaded photo is being presented through this elegant editorial strip framework`;
+==============================================
+STEP 4 — BRAND NAME (bottom of canvas)
+==============================================
+- Position: horizontally centered, y approx 1290-1320px
+- Text content: "${brand.name}"
+- Typography: elegant thin tracking, all caps or small caps, wide letter spacing
+- Font size: small (approx 22-28px)
+- Color: white #FFFFFF or very light warm tone
+- NO box, NO background — clean floating text only
+
+==============================================
+FORBIDDEN — DO NOT DO ANY OF THESE:
+==============================================
+- DO NOT draw, paint, or illustrate anything new — use only the uploaded photo
+- DO NOT add floral decorations, sparkle effects, bokeh blobs, or lens flares
+- DO NOT add any fake eye illustration or recreated face
+- DO NOT add "before" or "after" labels
+- DO NOT add a poster frame, white border, or card outline
+- DO NOT add slide numbers like "1/6"
+- DO NOT add any logo or QR code (the system adds these separately)
+- DO NOT invent brand slogans or extra text
+- The strip panels must be SOLID RECTANGULAR BLOCKS — not rounded, not faded
+- DO NOT add any decorative botanical or floral elements anywhere
+
+==============================================
+TARGET RESULT:
+==============================================
+Real uploaded photo used as full background → elegant extremely-spaced service name text floating over it → two solid warm peachy-tan rectangular horizontal strips overlaid in bottom half, showing cropped photo details inside → brand name at very bottom. Clean editorial Korean beauty salon look. Minimalist. No clutter.`;
 }
 
-/**
- * Build caption prompt for Showcase Strip posts
- */
 function buildCaptionPrompt({ title = '', content = '', serviceName = '', brand: brandOverride = null } = {}) {
   const brand = { ...config.brand, ...(brandOverride || {}) };
   const service = serviceName || title || 'beauty treatment';
